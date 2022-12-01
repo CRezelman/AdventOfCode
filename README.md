@@ -1,3 +1,3 @@
-# AdventOfCode2022
+# AdventOfCode
 
-Repository for Adevent of Code 2022
+Repository for Adevent of Code

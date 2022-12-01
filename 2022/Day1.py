@@ -1,8 +1,8 @@
 
 def day1():
+    elves = []
+    sum = 0
     with open('day1.txt') as f:
-        elves = []
-        sum = 0
         for line in f:
             if (line == '\n'):
                 elves.append(sum)
