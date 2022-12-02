@@ -5,62 +5,85 @@ class ActionToTake(Enum):
     PAPER_OR_DRAW = 'Y'
     SCISSORS_OR_LOSE = 'Z'
 
-class Opponent(Enum):
+class Shape(Enum):
     ROCK = 'A'
     PAPER = 'B'
     SCISSORS = 'C'
 
-class Points(Enum):
-    ROCK = 1
-    PAPER = 2
-    SCISSORS = 3
+class Score:
+    part1 = 0
+    part2 = 0
 
-class Outcome(Enum):
-    WIN = 6
-    DRAW = 3
-    LOSE = 0
+    def __str__(self) -> str:
+        return str(self.__dict__)
+
+    class Points(Enum):
+        ROCK = 1
+        PAPER = 2
+        SCISSORS = 3
+
+class Round():
+    opponent: Shape
+    actionToTake: ActionToTake
+    class Outcome(Enum):
+        WIN = 6
+        DRAW = 3
+        LOSE = 0
+
+    def __init__(self, opponent: Shape, actionToTake: ActionToTake, score: Score):
+        self.opponent = opponent
+        self.actionToTake = actionToTake
+        self.outcome(score)
+
+    def outcome(self, score: Score):
+        if (self.actionToTake == ActionToTake.ROCK_OR_WIN.value):
+            score.part1 += score.Points.ROCK.value
+            score.part2 += self.Outcome.LOSE.value
+
+            if (self.opponent == Shape.ROCK.value):
+                score.part1 += self.Outcome.DRAW.value
+                score.part2 += score.Points.SCISSORS.value
+            elif (self.opponent == Shape.PAPER.value):
+                score.part1 += self.Outcome.LOSE.value
+                score.part2 += score.Points.ROCK.value
+            elif (self.opponent == Shape.SCISSORS.value):
+                score.part1 += self.Outcome.WIN.value
+                score.part2 += score.Points.PAPER.value
+
+        elif (self.actionToTake == ActionToTake.PAPER_OR_DRAW.value):
+            score.part1 += score.Points.PAPER.value
+            score.part2 += self.Outcome.DRAW.value
+
+            if (self.opponent == Shape.ROCK.value):
+                score.part1 += self.Outcome.WIN.value
+                score.part2 += score.Points.ROCK.value
+            elif (self.opponent == Shape.PAPER.value):
+                score.part1 += self.Outcome.DRAW.value
+                score.part2 += score.Points.PAPER.value
+            elif (self.opponent == Shape.SCISSORS.value):
+                score.part1 += self.Outcome.LOSE.value
+                score.part2 += score.Points.SCISSORS.value
+
+        elif (self.actionToTake == ActionToTake.SCISSORS_OR_LOSE.value):
+            score.part1 += score.Points.SCISSORS.value
+            score.part2 += self.Outcome.WIN.value
+            
+            if (self.opponent == Shape.ROCK.value):
+                score.part1 += self.Outcome.LOSE.value
+                score.part2 += score.Points.PAPER.value
+            elif (self.opponent == Shape.PAPER.value):
+                score.part1 += self.Outcome.WIN.value
+                score.part2 += score.Points.SCISSORS.value
+            elif (self.opponent == Shape.SCISSORS.value):
+                score.part1 += self.Outcome.DRAW.value
+                score.part2 += score.Points.ROCK.value
+
 
 def day2():
-    score = [0, 0]
+    score = Score()
     with open('2022/day2.txt') as f:
         for line in f:
-            round = line.strip('\n').split(' ')
-            if (round[1] == ActionToTake.ROCK_OR_WIN.value):
-                score[0] += Points.ROCK.value
-                score[1] += Outcome.LOSE.value
-                if (round[0] == Opponent.ROCK.value):
-                    score[0] += Outcome.DRAW.value
-                    score[1] += Points.SCISSORS.value
-                elif (round[0] == Opponent.PAPER.value):
-                    score[0] += Outcome.LOSE.value
-                    score[1] += Points.ROCK.value
-                elif (round[0] == Opponent.SCISSORS.value):
-                    score[0] += Outcome.WIN.value
-                    score[1] += Points.PAPER.value
-            elif (round[1] == ActionToTake.PAPER_OR_DRAW.value):
-                score[0] += Points.PAPER.value
-                score[1] += Outcome.DRAW.value
-                if (round[0] == Opponent.ROCK.value):
-                    score[0] += Outcome.WIN.value
-                    score[1] += Points.ROCK.value
-                elif (round[0] == Opponent.PAPER.value):
-                    score[0] += Outcome.DRAW.value
-                    score[1] += Points.PAPER.value
-                elif (round[0] == Opponent.SCISSORS.value):
-                    score[0] += Outcome.LOSE.value
-                    score[1] += Points.SCISSORS.value
-            elif (round[1] == ActionToTake.SCISSORS_OR_LOSE.value):
-                score[0] += Points.SCISSORS.value
-                score[1] += Outcome.WIN.value
-                if (round[0] == Opponent.ROCK.value):
-                    score[0] += Outcome.LOSE.value
-                    score[1] += Points.PAPER.value
-                elif (round[0] == Opponent.PAPER.value):
-                    score[0] += Outcome.WIN.value
-                    score[1] += Points.SCISSORS.value
-                elif (round[0] == Opponent.SCISSORS.value):
-                    score[0] += Outcome.DRAW.value
-                    score[1] += Points.ROCK.value
+            Round(line[0], line[2], score)
 
     return score
 
