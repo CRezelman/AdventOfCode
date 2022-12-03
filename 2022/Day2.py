@@ -1,9 +1,9 @@
 from enum import Enum
 
 class ActionToTake(Enum):
-    ROCK_OR_WIN = 'X'
+    ROCK_OR_LOSE = 'X'
     PAPER_OR_DRAW = 'Y'
-    SCISSORS_OR_LOSE = 'Z'
+    SCISSORS_OR_WIN = 'Z'
 
 class Shape(Enum):
     ROCK = 'A'
@@ -36,47 +36,26 @@ class Round():
         self.outcome(score)
 
     def outcome(self, score: Score):
-        if (self.actionToTake == ActionToTake.ROCK_OR_WIN.value):
-            score.part1 += score.Points.ROCK.value
-            score.part2 += self.Outcome.LOSE.value
+        a = "ABC".index(self.opponent)
+        b = "XYZ".index(self.actionToTake)
 
-            if (self.opponent == Shape.ROCK.value):
-                score.part1 += self.Outcome.DRAW.value
-                score.part2 += score.Points.SCISSORS.value
-            elif (self.opponent == Shape.PAPER.value):
-                score.part1 += self.Outcome.LOSE.value
-                score.part2 += score.Points.ROCK.value
-            elif (self.opponent == Shape.SCISSORS.value):
-                score.part1 += self.Outcome.WIN.value
-                score.part2 += score.Points.PAPER.value
+        score.part1 += b + 1
 
+        res = (b - a) % 3
+
+        if (res == 0):
+            score.part1 += self.Outcome.DRAW.value
+        elif (res == 1):
+            score.part1 += self.Outcome.WIN.value
+        elif (res == 2):
+            score.part1 += self.Outcome.LOSE.value
+
+        if (self.actionToTake == ActionToTake.ROCK_OR_LOSE.value):
+            score.part2 += self.Outcome.LOSE.value + (a - 1) % 3 + 1
         elif (self.actionToTake == ActionToTake.PAPER_OR_DRAW.value):
-            score.part1 += score.Points.PAPER.value
-            score.part2 += self.Outcome.DRAW.value
-
-            if (self.opponent == Shape.ROCK.value):
-                score.part1 += self.Outcome.WIN.value
-                score.part2 += score.Points.ROCK.value
-            elif (self.opponent == Shape.PAPER.value):
-                score.part1 += self.Outcome.DRAW.value
-                score.part2 += score.Points.PAPER.value
-            elif (self.opponent == Shape.SCISSORS.value):
-                score.part1 += self.Outcome.LOSE.value
-                score.part2 += score.Points.SCISSORS.value
-
-        elif (self.actionToTake == ActionToTake.SCISSORS_OR_LOSE.value):
-            score.part1 += score.Points.SCISSORS.value
-            score.part2 += self.Outcome.WIN.value
-            
-            if (self.opponent == Shape.ROCK.value):
-                score.part1 += self.Outcome.LOSE.value
-                score.part2 += score.Points.PAPER.value
-            elif (self.opponent == Shape.PAPER.value):
-                score.part1 += self.Outcome.WIN.value
-                score.part2 += score.Points.SCISSORS.value
-            elif (self.opponent == Shape.SCISSORS.value):
-                score.part1 += self.Outcome.DRAW.value
-                score.part2 += score.Points.ROCK.value
+            score.part2 += self.Outcome.DRAW.value + a + 1
+        elif (self.actionToTake == ActionToTake.SCISSORS_OR_WIN.value):
+            score.part2 += self.Outcome.WIN.value + (a + 1) % 3 + 1
 
 
 def day2():
@@ -84,7 +63,7 @@ def day2():
     with open('2022/day2.txt') as f:
         for line in f:
             Round(line[0], line[2], score)
-
+            
     return score
 
 print(day2())
