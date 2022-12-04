@@ -32,14 +32,10 @@ def day4():
                     sections.elf2.start = int(section[0])
                     sections.elf2.end = int(section[1])
         
-            if ((sections.elf1.start >= sections.elf2.start) and (sections.elf1.end <= sections.elf2.end)):
-                sum.part1 += 1
-            elif ((sections.elf2.start >= sections.elf1.start) and (sections.elf2.end  <= sections.elf1.end)):
+            if ((sections.elf1.start >= sections.elf2.start) and (sections.elf1.end <= sections.elf2.end)) or ((sections.elf2.start >= sections.elf1.start) and (sections.elf2.end <= sections.elf1.end)):
                 sum.part1 += 1
 
-            if ((sections.elf2.start >= sections.elf1.start) and (sections.elf2.start <= sections.elf1.end)):
-                sum.part2 += 1
-            elif ((sections.elf1.start >= sections.elf2.start) and (sections.elf1.start <= sections.elf2.end)):
+            if ((sections.elf2.start >= sections.elf1.start) and (sections.elf2.start <= sections.elf1.end)) or ((sections.elf1.start >= sections.elf2.start) and (sections.elf1.start <= sections.elf2.end)):
                 sum.part2 += 1
 
     return sum
