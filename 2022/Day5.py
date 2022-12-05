@@ -1,33 +1,23 @@
 def day5():
     topCrates1 = ''
     topCrates2 = ''
-    stacks1 = [
-        ['S', 'Z', 'P', 'D', 'L', 'B', 'F', 'C'],
-        ['N', 'V', 'G', 'P', 'H', 'W', 'B'],
-        ['F', 'W', 'B', 'J', 'G'],
-        ['G', 'J', 'N', 'F', 'L', 'W', 'C', 'S'],
-        ['W', 'J', 'L', 'T', 'P', 'M', 'S', 'H'],
-        ['B', 'C', 'W', 'G', 'F', 'S'],
-        ['H', 'T', 'P', 'M', 'Q', 'B', 'W'],
-        ['F', 'S', 'W', 'T'],
-        ['N', 'C', 'R']
-    ]
-    stacks2 = [
-        ['S', 'Z', 'P', 'D', 'L', 'B', 'F', 'C'],
-        ['N', 'V', 'G', 'P', 'H', 'W', 'B'],
-        ['F', 'W', 'B', 'J', 'G'],
-        ['G', 'J', 'N', 'F', 'L', 'W', 'C', 'S'],
-        ['W', 'J', 'L', 'T', 'P', 'M', 'S', 'H'],
-        ['B', 'C', 'W', 'G', 'F', 'S'],
-        ['H', 'T', 'P', 'M', 'Q', 'B', 'W'],
-        ['F', 'S', 'W', 'T'],
-        ['N', 'C', 'R']
-    ]
+
+    stacks1 = [[], [], [], [], [], [], [], [], []]
+    stacks2 = [[], [], [], [], [], [], [], [], []]
 
     with open('2022/day5.txt') as f:
         for i, line in enumerate(f):
+            if i < 8:
+                count = 0
+                for index, char in enumerate(line):
+                    if index % 4 == 1:
+                        if char != ' ':
+                            stacks1[count].insert(0, char)
+                            stacks2[count].insert(0, char)
+                        count += 1
+
             if i >= 10:
-                line = line.strip('\n').split(' ')
+                line = line.split(' ')
                 move = line[1]
                 source = line[3]
                 target = line[5]
