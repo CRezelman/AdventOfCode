@@ -2,8 +2,8 @@ def day5():
     topCrates1 = ''
     topCrates2 = ''
 
-    stacks1 = [[], [], [], [], [], [], [], [], []]
-    stacks2 = [[], [], [], [], [], [], [], [], []]
+    stacks1 = [ []*9 for i in range(9)]
+    stacks2 = [ []*9 for i in range(9)]
 
     with open('2022/day5.txt') as f:
         for i, line in enumerate(f):
