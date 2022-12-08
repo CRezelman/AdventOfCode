@@ -3,7 +3,6 @@ def day8():
     part1 = 0
     part2 = 0
     trees = [[0 for i in range(gridSize)] for j in range(gridSize)]
-    scores = []
 
     with open('2022/day8.txt') as f:
         for i, line in enumerate(f):
@@ -26,44 +25,34 @@ def day8():
                 treesBottom = 0
 
                 for k in range(i):
+                    treesUp += 1
                     if trees[(i-1)-k][j] >= trees[i][j]:
                         colVisibleTop = False
-                        treesUp += 1
                         break
-                    else:
-                        treesUp += 1
 
                 for k in range(gridSize-(i+1)):
+                    treesBottom += 1
                     if trees[(i+1)+k][j] >= trees[i][j]:
                         colVisibleBottom = False
-                        treesBottom += 1
                         break
-                    else:
-                        treesBottom += 1
 
 
                 for n in range(j):
+                    treesLeft += 1
                     if trees[i][(j-1)-n] >= trees[i][j]:
                         rowVisibleLeft = False
-                        treesLeft += 1
                         break
-                    else:
-                        treesLeft += 1
 
                 for n in range(gridSize-(j+1)):
+                    treesRight += 1
                     if trees[i][(n+1)+j] >= trees[i][j]:
                         rowVisibleRight = False
-                        treesRight += 1
                         break
-                    else:
-                        treesRight += 1
 
                 if rowVisibleLeft or rowVisibleRight or colVisibleTop or colVisibleBottom:
                     part1 += 1
-                
-                scores.append(treesRight*treesLeft*treesUp*treesBottom)
 
-        part2 = max(scores)
+                part2 = max(part2, treesRight*treesLeft*treesUp*treesBottom)
     
     return part1, part2
 
