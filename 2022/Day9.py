@@ -1,30 +1,41 @@
 
-class Head():
+class Node():
     x = 0
     y = 0
-    prevX = 0
-    prevY = 0
 
     def __init__(self, x, y, prevX, prevY):
         self.x = x
         self.y = y
-        self.prevX = prevX
-        self.prevY = prevY
 
 
-def checkDist(head: Head, tX, tY):
-    return abs(head.x - tX) >= 2 or abs(head.y - tY) >= 2
+def checkDist(node1: Node, node2: Node):
+    return abs(node1.x - node2.x) >= 2 or abs(node1.y - node2.y) >= 2
+
+def updateNode(node1: Node, node2: Node):
+    if node1.x > node2.x:
+        node2.x += 1
+    if node1.x < node2.x:
+        node2.x -= 1
+    if node1.y > node2.y:
+        node2.y += 1
+    if node1.y < node2.y:
+        node2.y -= 1
 
 
 def day9_2():
     part1 = 0
     part2 = 0
 
-    head = Head(0,0,0,0)
-    tX = 0
-    tY = 0
-
-    prevDir = 'h'
+    head = Node(0,0,0,0)
+    node2 = Node(0,0,0,0)
+    node3 = Node(0,0,0,0)
+    node4 = Node(0,0,0,0)
+    node5 = Node(0,0,0,0)
+    node6 = Node(0,0,0,0)
+    node7 = Node(0,0,0,0)
+    node8 = Node(0,0,0,0)
+    node9 = Node(0,0,0,0)
+    tail = Node(0,0,0,0)
 
     tailPlaces = set()
 
@@ -34,9 +45,6 @@ def day9_2():
             dir, count = line.split(' ')
 
             for j in range(int(count)):
-                head.prevX = head.x
-                head.prevY = head.y
-
                 if dir == 'R':
                     head.x +=1
 
@@ -49,15 +57,39 @@ def day9_2():
                 elif dir == 'D':
                     head.y -= 1
 
-                if checkDist(head, tX, tY):
-                    tX = head.prevX
-                    tY = head.prevY
+                ## Part 1 ##
+                # if checkDist(head, tail):
+                #     updateNode(head, tail)
 
-                tailPlaces.add((tX, tY))
+                if checkDist(head, node2):
+                    updateNode(head, node2)
 
-            
-    print(tailPlaces)
-    part1 = len(tailPlaces)
+                if checkDist(node2, node3):
+                    updateNode(node2, node3)
+
+                if checkDist(node3, node4):
+                    updateNode(node3, node4)
+
+                if checkDist(node4, node5):
+                    updateNode(node4, node5)
+
+                if checkDist(node5, node6):
+                    updateNode(node5, node6)
+
+                if checkDist(node6, node7):
+                    updateNode(node6, node7)
+
+                if checkDist(node7, node8):
+                    updateNode(node7, node8)
+
+                if checkDist(node8, node9):
+                    updateNode(node8, node9)
+
+                if checkDist(node9, tail):
+                    updateNode(node9, tail)
+
+                tailPlaces.add((tail.x, tail.y))
+        part1 = len(tailPlaces)
 
     return part1, part2
 
