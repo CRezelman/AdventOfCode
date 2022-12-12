@@ -28,7 +28,7 @@ def day9_2():
 
     tailPlaces = set()
 
-    with open('2022/day9.txt') as f:
+    with open('2022/inputs/day9.txt') as f:
         for i, line in enumerate(f):
             line = line.strip('\n')
             dir, count = line.split(' ')

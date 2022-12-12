@@ -60,7 +60,7 @@ class Round():
 
 def day2():
     score = Score()
-    with open('2022/day2.txt') as f:
+    with open('2022/inputs/day2.txt') as f:
         for line in f:
             Round(line[0], line[2], score)
             

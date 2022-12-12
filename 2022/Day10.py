@@ -5,7 +5,7 @@ def day10():
 	x = 1
 	crt = ''
 	opCycles = 0
-	with open('2022/day10.txt') as f:
+	with open('2022/inputs/day10.txt') as f:
 		for line in f:
 			line = line.strip('\n')
 

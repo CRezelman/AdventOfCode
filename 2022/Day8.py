@@ -4,7 +4,7 @@ def day8():
     part2 = 0
     trees = [[0 for i in range(gridSize)] for j in range(gridSize)]
 
-    with open('2022/day8.txt') as f:
+    with open('2022/inputs/day8.txt') as f:
         for i, line in enumerate(f):
             line = line.strip('\n')
             for j, char in enumerate(line):

@@ -5,7 +5,7 @@ def day5():
     stacks1 = [ []*9 for i in range(9)]
     stacks2 = [ []*9 for i in range(9)]
 
-    with open('2022/day5.txt') as f:
+    with open('2022/inputs/day5.txt') as f:
         for i, line in enumerate(f):
             if i < 8:
                 count = 0

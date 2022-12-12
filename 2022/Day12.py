@@ -8,7 +8,7 @@ def day12():
     heightMap = [[0 for i in range(70)] for j in range(41)]
     possibleStarts = []
 
-    with open('2022/day12.txt') as f:
+    with open('2022/inputs/day12.txt') as f:
         for i, line in enumerate(f):
             line = line.strip('\n')
             for j, char in enumerate(line):

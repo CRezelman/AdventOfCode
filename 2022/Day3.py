@@ -15,7 +15,7 @@ class Sum:
 def day3():
     bag = []
     sum = Sum()
-    with open('2022/day3.txt') as f:
+    with open('2022/inputs/day3.txt') as f:
         for index, line in enumerate(f):
             for char in line[:len(line)//2]:
                 if char in line[len(line)//2:]:

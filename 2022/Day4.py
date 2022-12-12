@@ -19,7 +19,7 @@ class Sum:
 
 def day4():
     sum = Sum()
-    with open('2022/day4.txt') as f:
+    with open('2022/inputs/day4.txt') as f:
         for line in f:
             sections = Sections()
             elves = line.strip('\n').split(',')

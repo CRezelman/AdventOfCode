@@ -32,7 +32,7 @@ def day7():
     part2 = 0
     currentDir = ''
     depth = 0
-    with open('2022/day7.txt') as f:
+    with open('2022/inputs/day7.txt') as f:
         for i, line in enumerate(f):
             line = line.strip('\n')
             if '$ cd /' in line:

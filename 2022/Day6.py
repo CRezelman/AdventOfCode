@@ -1,7 +1,7 @@
 def day6():
     part1 = 0
     part2 = 0
-    with open('2022/day6.txt') as f:
+    with open('2022/inputs/day6.txt') as f:
         for line in f:
             for i, char in enumerate(line):
                 if (i - 3 >= 0 and part1 == 0) and len(set([line[i-j] for j in range(4)])) == 4:

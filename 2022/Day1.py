@@ -2,7 +2,7 @@
 def day1():
     elves = []
     sum = 0
-    with open('2022/day1.txt') as f:
+    with open('2022/inputs/day1.txt') as f:
         for line in f:
             if (line == '\n'):
                 elves.append(sum)
