@@ -166,11 +166,14 @@ monkey6 = Monkey6([69, 60, 53, 89, 71, 88])
 monkey7 = Monkey7([72, 54, 63, 80])    
 
 def part(rounds, worry):
+    mod_factor = math.prod([3, 5, 2, 13, 11, 17, 19, 7])
     for round in range(rounds):
         for item in monkey0.items:
             newItem = monkey0.operation(item)
             if worry:
-                newItem = math.floor(newItem/3)
+                newItem = newItem // 3
+            else:
+                newItem %= mod_factor
             monkey0.test(newItem)
             monkey0.inspected += 1
         monkey0.items.clear()
@@ -178,7 +181,9 @@ def part(rounds, worry):
         for item in monkey1.items:
             newItem = monkey1.operation(item)
             if worry:
-                newItem = math.floor(newItem/3)
+                newItem = newItem // 3
+            else:
+                newItem %= mod_factor
             monkey1.test(newItem)
             monkey1.inspected += 1
         monkey1.items.clear()
@@ -186,7 +191,9 @@ def part(rounds, worry):
         for item in monkey2.items:
             newItem = monkey2.operation(item)
             if worry:
-                newItem = math.floor(newItem/3)
+                newItem = newItem // 3
+            else:
+                newItem %= mod_factor
             monkey2.test(newItem)
             monkey2.inspected += 1
         monkey2.items.clear()
@@ -194,7 +201,9 @@ def part(rounds, worry):
         for item in monkey3.items:
             newItem = monkey3.operation(item)
             if worry:
-                newItem = math.floor(newItem/3)
+                newItem = newItem // 3
+            else:
+                newItem %= mod_factor
             monkey3.test(newItem)
             monkey3.inspected += 1
         monkey3.items.clear()
@@ -202,7 +211,9 @@ def part(rounds, worry):
         for item in monkey4.items:
             newItem = monkey4.operation(item)
             if worry:
-                newItem = math.floor(newItem/3)
+                newItem = newItem // 3
+            else:
+                newItem %= mod_factor
             monkey4.test(newItem)
             monkey4.inspected += 1
         monkey4.items.clear()
@@ -210,7 +221,9 @@ def part(rounds, worry):
         for item in monkey5.items:
             newItem = monkey5.operation(item)
             if worry:
-                newItem = math.floor(newItem/3)
+                newItem = newItem // 3
+            else:
+                newItem %= mod_factor
             monkey5.test(newItem)
             monkey5.inspected += 1
         monkey5.items.clear()
@@ -218,7 +231,9 @@ def part(rounds, worry):
         for item in monkey6.items:
             newItem = monkey6.operation(item)
             if worry:
-                newItem = math.floor(newItem/3)
+                newItem = newItem // 3
+            else:
+                newItem %= mod_factor
             monkey6.test(newItem)
             monkey6.inspected += 1
         monkey6.items.clear()
@@ -226,20 +241,21 @@ def part(rounds, worry):
         for item in monkey7.items:
             newItem = monkey7.operation(item)
             if worry:
-                newItem = math.floor(newItem/3)
+                newItem = newItem // 3
+            else:
+                newItem %= mod_factor
             monkey7.test(newItem)
             monkey7.inspected += 1
         monkey7.items.clear()
 
 
-def day11():
+def day11(rounds, worry):
     part1 = 0
     inspected = []
 
     monkeys = [monkey0, monkey1, monkey2, monkey3, monkey4, monkey5, monkey6, monkey7]
-    part(10000, False)
+    part(rounds, worry)
 
-            
     for monkey in monkeys:
         inspected.append(monkey.inspected)
 
@@ -248,4 +264,13 @@ def day11():
 
     return part1
 
-print(day11())
+print(day11(20, True))
+monkey0 = Monkey0([99, 67, 92, 61, 83, 64, 98])
+monkey1 = Monkey1([78, 74, 88, 89, 50])
+monkey2 = Monkey2([98, 91])
+monkey3 = Monkey3([59, 72, 94, 91, 79, 88, 94, 51])
+monkey4 = Monkey4([95, 72, 78])
+monkey5 = Monkey5([76])
+monkey6 = Monkey6([69, 60, 53, 89, 71, 88])
+monkey7 = Monkey7([72, 54, 63, 80])    
+print(day11(10000, False))
