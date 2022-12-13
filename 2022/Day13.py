@@ -2,6 +2,7 @@ import ast
 from functools import cmp_to_key
 
 def compare(first, second):
+    comp = 0
 
     if isinstance(first, int) and isinstance(second, int):
         return 0 if first == second else (-1 if first > second else 1)
@@ -13,10 +14,8 @@ def compare(first, second):
         first = [first]
 
     if isinstance(first, list) and isinstance(second, list):
-        minLength = min(len(first), len(second))
-        comp = 0
 
-        for i in range(minLength):
+        for i in range(min(len(first), len(second))):
             comp = compare(first[i], second[i])
             if comp != 0:
                 return comp
@@ -34,14 +33,15 @@ def day13():
     with open('2022/inputs/day13.txt') as f:
         for i, line in enumerate(f):
             line = line.strip('\n')
-            if i % 3 == 0:
-                first = ast.literal_eval(line)
-                messages2.append(ast.literal_eval(line))
-            elif i % 3 == 1:
-                second = ast.literal_eval(line)
-                messages2.append(ast.literal_eval(line))
-            elif i % 3 == 2:
-                messages1.append([first, second])
+            match (i % 3):
+                case 0:
+                    first = ast.literal_eval(line)
+                    messages2.append(ast.literal_eval(line))
+                case 1:
+                    second = ast.literal_eval(line)
+                    messages2.append(ast.literal_eval(line))
+                case 2:
+                    messages1.append([first, second])
 
 
     for j, msg in enumerate(messages1):
