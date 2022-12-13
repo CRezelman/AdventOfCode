@@ -4,12 +4,7 @@ from functools import cmp_to_key
 def compare(first, second):
 
     if isinstance(first, int) and isinstance(second, int):
-        if (first < second):
-            return 1
-        elif (first > second):
-            return -1
-        elif (first == second):
-            return 0
+        return 0 if first == second else (-1 if first > second else 1)
 
     if isinstance(first, list) and isinstance(second, int):
         second = [second]
@@ -19,25 +14,20 @@ def compare(first, second):
 
     if isinstance(first, list) and isinstance(second, list):
         minLength = min(len(first), len(second))
-
         comp = 0
+
         for i in range(minLength):
             comp = compare(first[i], second[i])
             if comp != 0:
                 return comp
 
         if (comp == 0):
-            if len(first) > len(second):
-                return -1
-            elif len(first) < len(second):
-                return 1
-            elif len(first) == len(second):
-                return 0
+            return 0 if len(first) == len(second) else (-1 if len(first) > len(second) else 1)
 
 
 def day13():
     part1 = 0
-    part2 = 0
+    part2 = 1
     messages1 = []
     messages2 = [[[2]], [[6]]]
 
@@ -55,18 +45,13 @@ def day13():
 
 
     for j, msg in enumerate(messages1):
-        comp = compare(msg[0], msg[1])
-        if comp > -1:
+        if compare(msg[0], msg[1]) > -1:
             part1 += (j+1)
     
-    messages2 = sorted(messages2, key=cmp_to_key(compare), reverse=1)  
+    messages2 = sorted(messages2, key=cmp_to_key(compare), reverse=1)
 
-    part2 = 1
     for n, msg in enumerate(messages2):
-        print(msg)
-        if msg == [[2]]:
-            part2 *= (n+1)
-        if msg == [[6]]:
+        if msg == [[2]] or msg == [[6]]:
             part2 *= (n+1)
 
     return part1, part2
