@@ -28,7 +28,6 @@ def day12():
  
  
 def isValid(mat, visited, row, col, i, j):
-
     return (row >= 0) and (row < len(mat)) and (col >= 0) and (col < len(mat[0])) \
            and (mat[row][col] <= mat[i][j] or (mat[row][col]) == (mat[i][j])+1) and not visited[row][col]
  
