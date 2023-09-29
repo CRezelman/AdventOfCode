@@ -1,5 +1,5 @@
 def day3():
-    x = 0 
+    x = 0
     y = 0
     houses = [[0, 0]]
 
@@ -8,7 +8,7 @@ def day3():
     roboX = 0
     roboY = 0
     houses2 = [[0, 0]]
-    with open('2015/day3.txt') as f:
+    with open('2015/inputs/day3.txt') as f:
         for index, char in enumerate(f.readline()):
             if char == '>':
                 x += 1
@@ -18,7 +18,7 @@ def day3():
                 y += 1
             elif char == 'v':
                 y -= 1
-            
+
             if [x, y] not in houses:
                 houses.append([x, y])
 
@@ -34,7 +34,7 @@ def day3():
 
                 if [santaX, santaY] not in houses2:
                     houses2.append([santaX, santaY])
-            
+
             if index % 2 == 1:
                 if char == '>':
                     roboX += 1
@@ -47,7 +47,7 @@ def day3():
 
                 if [roboX, roboY] not in houses2:
                     houses2.append([roboX, roboY])
-        
+
     return len(houses), len(houses2)
 
 

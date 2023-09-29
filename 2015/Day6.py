@@ -3,7 +3,7 @@ def day6():
     lights2 = [[0 for x in range(1000)] for y in range(1000)]
     lightCount1 = 0
     lightCount2 = 0
-    with open('2015/day6.txt') as f:
+    with open('2015/inputs/day6.txt') as f:
         for line in f:
             switch = line.split(' ')
             action = ''
@@ -13,8 +13,10 @@ def day6():
 
                 for i in range(int(endX)-int(startX) + 1):
                     for j in range(int(endY)-int(startY) + 1):
-                        lights1[int(startX) + i][int(startY) + j] =  not lights1[int(startX) + i][int(startY) + j]
-                        lights2[int(startX) + i][int(startY) + j] =  lights2[int(startX) + i][int(startY) + j] + 2
+                        lights1[int(startX) + i][int(startY) +
+                                                 j] = not lights1[int(startX) + i][int(startY) + j]
+                        lights2[int(startX) + i][int(startY) +
+                                                 j] = lights2[int(startX) + i][int(startY) + j] + 2
 
             if 'turn on' in line:
                 startX, startY = switch[2].split(',')
@@ -44,5 +46,6 @@ def day6():
             lightCount2 += lights2[i][j]
 
     return lightCount1, lightCount2
+
 
 print(day6())
