@@ -1,31 +1,41 @@
-def processLine(line: str, part: int, reverse = False) -> str:
-    numChars = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-    num = 0
-    substr = ''
-    line = line[::-1] if reverse else line
-    
-    for char in line:
-        if num and part == 2: break
-        substr += char
-        for i, numChar in enumerate(numChars):
-            if numChar in (substr[::-1] if reverse else substr):
-                num = str(i + 1)
-                break
+class ValidDigits:
+    def __init__(self) -> None:
+        self.part1 = dict({ '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9 })
+        self.part2 = self.part1 | { 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9 }
+        pass
+    def get(self, findStrings) -> dict:
+        return self.part2 if findStrings else self.part1
 
-        if char.isdigit():
-            num = char
+
+def processLine(line: str, findStrings: bool) -> (str, str):
+    left = ''
+    right = ''
+    num1 = 0
+    num2 = 0
+
+    for i, char in enumerate(line):
+        if num1 and num2:
             break
-    return num
+        left += char
+        right += line[-1 - i]
 
-def day1(part: int) -> int:
+
+        for numChar, value in ValidDigits().get(findStrings).items():
+            if numChar in left and not num1:
+                num1 = str(value)
+            if numChar in right[::-1] and not num2:
+                num2 = str(value)
+            if num1 and num2:
+                break
+    return int(num1 + num2)
+
+
+def day1(findStrings: bool) -> int:
     result = 0
     with open('2023/inputs/day1.txt') as f:
         for line in f:
-            line = line.strip('\n')
-            num1 = processLine(line, part, False)
-            num2 = processLine(line, part, True)
-            result += int(str(num1) + str(num2))
+            result += processLine(line, findStrings)
 
     return result
 
-print(day1(1), day1(2))
+print(day1(False), day1(True))
