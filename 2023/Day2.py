@@ -1,5 +1,16 @@
+from enum import Enum
+
+class Colours(Enum):
+    RED = 'red'
+    GREEN = 'green'
+    BLUE = 'blue'
+
+class AllowedColours(Enum):
+    RED = 12
+    GREEN = 13
+    BLUE = 14
 class GameInfo:
-    def __init__(self, colour: str, number: int):
+    def __init__(self, colour: Colours, number: int):
         self.colour = colour
         self.number = number
 
@@ -8,24 +19,21 @@ class Game:
     def __init__(self, id: int) -> None:
         self.id = id
         self.info: list[GameInfo] = []
+        self.maxRed = 0
+        self.maxGreen = 0
+        self.maxBlue = 0
 
-    def addInfo(self, colour: str, number: int):
+    def addInfo(self, colour: Colours, number: int):
         info = GameInfo(colour, number)
         self.info.append(info)
 
 def day1(): 
     part1 = 0
     part2 = 0
-    allowedRed = 12
-    allowedGreen = 13
-    allowedBlue = 14
     games: list[Game] = []
-    allowedGames: list[Game] = []
     with open('2023/inputs/day2.txt') as f:
         for line in f:
-            line = line.strip('\n')
-            line = line.replace(';', ',')
-            split = line.split(':')
+            split = line.strip('\n').replace(';', ',').split(':')
             id = split[0].split(' ')[1]
             game = Game(id)
 
@@ -39,33 +47,24 @@ def day1():
 
     
     for game in games:
-        for info in game.info:
-            if info.colour == 'red' and info.number > allowedRed:
-                break
-            if info.colour == 'green' and info.number > allowedGreen:
-                break
-            if info.colour == 'blue' and info.number > allowedBlue:
-                break
-        else:
-            allowedGames.append(game)
-
-    for allowedGame in allowedGames:
-        part1 += int(allowedGame.id)
-
-    for game in games:
-        maxRed = 0
-        maxGreen = 0
-        maxBlue = 0
+        valid = True
 
         for info in game.info:
-            if info.colour == 'red':
-                maxRed = max(info.number, maxRed)
-            if info.colour == 'green':
-                maxGreen = max(info.number, maxGreen)
-            if info.colour == 'blue':
-                maxBlue = max(info.number, maxBlue)
-        part2 += maxRed*maxGreen*maxBlue
-
+            if info.colour == Colours.RED.value:
+                game.maxRed = max(info.number, game.maxRed)
+                if info.number > AllowedColours.RED.value:
+                    valid = False
+            if info.colour == Colours.GREEN.value:
+                game.maxGreen = max(info.number, game.maxGreen)
+                if info.number > AllowedColours.GREEN.value:
+                    valid = False
+            if info.colour == Colours.BLUE.value:
+                game.maxBlue = max(info.number, game.maxBlue)
+                if info.number > AllowedColours.BLUE.value:
+                    valid = False
+        if valid:
+            part1 += int(game.id)
+        part2 += game.maxRed*game.maxGreen*game.maxBlue
 
     return part1, part2
 
