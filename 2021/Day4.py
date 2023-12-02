@@ -26,7 +26,7 @@ class Board:
 
         return False
 
-def day1(): 
+def day4(): 
     part1 = 0
     part2 = 0
     boards: list[Board] = []
