@@ -64,4 +64,4 @@ def day4():
 
     return part1*winningNumbers[0], part2*winningNumbers[-1]
 
-print(day1())
+print(day4())
