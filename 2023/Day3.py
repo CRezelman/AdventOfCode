@@ -4,6 +4,7 @@ class Number:
         self.endX = endX
         self.y = y
         self.stars = set()
+        self.number: int = 0
         pass
 
     def addStar(self, x: int, y: int):
@@ -16,15 +17,12 @@ class Number:
 def day6(): 
     part1 = 0
     part2 = 0
-    symbols = ['*', '+', '$', '%', '@', '=', '/', '#', '&', '-']
+    symbols = {'*', '+', '$', '%', '@', '=', '/', '#', '&', '-'}
 
     schematic: list[list[str]] = []
 
     with open('2023/inputs/day3.txt') as f:
-        for i, line in enumerate(f):
-            schematic.append([])
-            for j, char in enumerate(line):
-                schematic[i].append(char)
+        schematic = [list(line) for line in f]
 
 
     numbersFound: list[Number] = []
@@ -45,50 +43,25 @@ def day6():
     validNumbers: set[Number] = set()
 
     for number in numbersFound:
-        num = ''
-        for i in range(number.endX - number.startX + 1):
-            num += schematic[number.y][number.startX + i]
+        num = ''.join(schematic[number.y][number.startX:number.endX + 1])
         number.defineNumber(int(num))
 
-        if (number.startX -1) >= 0 and schematic[number.y][number.startX - 1] in symbols:
-            validNumbers.add(number)
-            if schematic[number.y][number.startX - 1] == '*':
-                number.addStar(number.startX-1, number.y)
-        if (number.endX +1) <= (len(schematic[0]) + 1) and schematic[number.y][number.endX + 1] in symbols:
-            validNumbers.add(number)
-            if schematic[number.y][number.endX + 1] == '*':
-                number.addStar(number.endX+1, number.y)
-
-        for i in range(number.endX - number.startX + 1 + 2):
-            if (number.y - 1) >= 0 and (number.startX -1 + i) >= 0 and schematic[number.y - 1][number.startX -1 + i] in symbols:
-                validNumbers.add(number)
-                if schematic[number.y - 1][number.startX -1 + i] == '*':
-                    number.addStar(number.startX -1 + i, number.y - 1)
-            if (number.y - 1) >= 0 and (number.endX +1 + i) <= (len(schematic[0]) - 1) and schematic[number.y - 1][number.startX -1 + i] in symbols:
-                validNumbers.add(number)
-                if schematic[number.y - 1][number.startX -1 + i] == '*':
-                    number.addStar(number.startX -1 + i, number.y - 1)
-            if (number.y + 1) <= (len(schematic) - 1) and (number.startX -1 + i) >= 0 and schematic[number.y + 1][number.startX -1 + i] in symbols:
-                validNumbers.add(number)
-                if schematic[number.y + 1][number.startX -1 + i] == '*':
-                    number.addStar(number.startX -1 + i, number.y + 1)
-            if (number.y + 1) <= (len(schematic) - 1) and (number.endX +1 + i) <= (len(schematic[0]) - 1) and schematic[number.y + 1][number.startX -1 + i] in symbols:
-                validNumbers.add(number)
-                if schematic[number.y + 1][number.startX -1 + i] == '*':
-                    number.addStar(number.startX -1 + i, number.y + 1)
+        for i in range(number.startX - 1, number.endX + 2):
+            for j in range(number.y - 1, number.y + 2):
+                if 0 <= i < len(schematic[0]) and 0 <= j < len(schematic) and schematic[j][i] in symbols:
+                    validNumbers.add(number)
+                    if schematic[j][i] == '*':
+                        number.addStar(i, j)
 
 
     for validNumber in validNumbers:
         part1 += int(validNumber.number)
 
-    starDict = dict()
+    starDict: dict[tuple[int, int], list[Number]] = dict()
 
     for number in numbersFound:
         for star in number.stars:
-            if starDict.get(star):
-                starDict[star] += [number]
-            else: 
-                starDict[star] = [number]
+            starDict.setdefault(star, []).append(number)
 
     for star in starDict.items():
         if len(star[1]) == 2:
