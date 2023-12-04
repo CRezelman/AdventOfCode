@@ -22,7 +22,7 @@ def day6():
     schematic: list[list[str]] = []
 
     with open('2023/inputs/day3.txt') as f:
-        schematic = [list(line) for line in f]
+        schematic = [list(line.strip()) for line in f]
 
 
     numbersFound: list[Number] = []
@@ -35,6 +35,10 @@ def day6():
                     start = j
                 if start is not None:
                     end = j
+                if j == len(line) - 1:
+                    numbersFound.append(Number(int(start), int(end), int(i)))
+                    start = None
+                    end = None
             elif start is not None and end is not None:
                 numbersFound.append(Number(int(start), int(end), int(i)))
                 start = None
