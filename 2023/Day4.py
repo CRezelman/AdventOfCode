@@ -24,16 +24,12 @@ def day4():
             cardNumbers = [int(x) for x in card.strip().replace('  ', ' ').split(' ')]
             cards.append(Card(winningNumbers, cardNumbers))
 
-    for card in cards:
-        matches = reduce(lambda x, y: x+card.winningNumbers.count(y), set(card.cardNumbers), 0)
-        if matches > 0: part1 += 2**(matches-1)
-
     for i, card in enumerate(cards):
         card.matches = reduce(lambda x, y: x+card.winningNumbers.count(y), set(card.cardNumbers), 0)
+        if card.matches > 0: 
+            part1 += 2**(card.matches - 1)
         for j in range(card.matches):
             cards[i + 1 + j].addCount(card.count)
-
-    for card in cards:
         part2 += card.count
 
     return part1, part2
