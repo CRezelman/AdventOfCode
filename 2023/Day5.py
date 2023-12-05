@@ -22,7 +22,7 @@ def applyMap(value: int, maps: list[SourceDestination]) -> int:
             return value + m.destination - m.source
     return value
 
-def optimizeLocations(start, end, step, maps):
+def optimizeLocations(start: int, end: int, step: int, maps: list[Mapping]):
     locations = []
     for j in range(start, end, step):
         currentValue = j
