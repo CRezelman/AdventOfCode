@@ -22,6 +22,16 @@ def applyMap(value: int, maps: list[SourceDestination]) -> int:
             return value + m.destination - m.source
     return value
 
+def optimizeLocations(start, end, step, maps):
+    locations = []
+    for j in range(start, end, step):
+        currentValue = j
+        for currentMap in maps:
+            currentValue = applyMap(currentValue, currentMap.maps)
+
+        locations.append((j, currentValue))
+    return locations
+
 
 def day4(): 
     part1 = sys.maxsize
@@ -41,35 +51,17 @@ def day4():
                 currentMap.addMap(int(source), int(dest), int(length))
 
     for seed in seeds:
-        currentValue = seed
-        for currentMap in maps:
-            currentValue = applyMap(currentValue, currentMap.maps)
-
-        part1 = min(part1, currentValue)
+        locations = optimizeLocations(seed, seed + 1, 1, maps)
+        _, lowestLocation = min(locations, key=lambda x: x[1])
+        part1 = min(part1, lowestLocation)
 
 
     for i, seed in enumerate(seeds[::2]):
-        locations = []
-
-        for j in range(seed, seed + seeds[i*2+1], 1_000_000):
-            currentValue = j
-            for currentMap in maps:
-                currentValue = applyMap(currentValue, currentMap.maps)
-
-            locations.append((j, currentValue))
-
+        locations = optimizeLocations(seed, seed + seeds[i*2+1], 10**6, maps)
         newSeed, lowestLocation = min(locations, key=lambda x: x[1])
         
-
         for k in range(6, 0, -1):
-            locations = []
-            for j in range(newSeed - 10**k, newSeed + 10**k, 10**(k-1)):
-                currentValue = j
-                for currentMap in maps:
-                    currentValue = applyMap(currentValue, currentMap.maps)
-
-                locations.append((j, currentValue))
-
+            locations = optimizeLocations(newSeed - 10**k, newSeed + 10**k, 10**(k-1), maps)
             newSeed, lowestLocation = min(locations, key=lambda x: x[1])
 
         part2 = min(part2, lowestLocation)
