@@ -56,8 +56,8 @@ def day4():
         part1 = min(part1, lowestLocation)
 
 
-    for i, seed in enumerate(seeds[::2]):
-        locations = optimizeLocations(seed, seed + seeds[i*2+1], 10**6, maps)
+    for seed, length in zip(seeds[::2], seeds[1::2]):
+        locations = optimizeLocations(seed, seed + length, 10**6, maps)
         newSeed, lowestLocation = min(locations, key=lambda x: x[1])
         
         for k in range(6, 0, -1):
