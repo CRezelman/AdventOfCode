@@ -22,7 +22,7 @@ def applyMap(value: int, maps: list[SourceDestination]) -> int:
             return value + m.destination - m.source
     return value
 
-def optimizeLocations(start: int, end: int, step: int, maps: list[Mapping]):
+def optimizeLocations(start: int, end: int, step: int, maps: list[Mapping]) -> tuple[int, int]:
     locations = []
     for j in range(start, end, step):
         currentValue = j
@@ -30,7 +30,7 @@ def optimizeLocations(start: int, end: int, step: int, maps: list[Mapping]):
             currentValue = applyMap(currentValue, currentMap.maps)
 
         locations.append((j, currentValue))
-    return locations
+    return min(locations, key=lambda x: x[1])
 
 
 def day4(): 
@@ -51,18 +51,15 @@ def day4():
                 currentMap.addMap(int(source), int(dest), int(length))
 
     for seed in seeds:
-        locations = optimizeLocations(seed, seed + 1, 1, maps)
-        _, lowestLocation = min(locations, key=lambda x: x[1])
+        _, lowestLocation = optimizeLocations(seed, seed + 1, 1, maps)
         part1 = min(part1, lowestLocation)
 
 
     for seed, length in zip(seeds[::2], seeds[1::2]):
-        locations = optimizeLocations(seed, seed + length, 10**6, maps)
-        newSeed, lowestLocation = min(locations, key=lambda x: x[1])
+        newSeed, lowestLocation = optimizeLocations(seed, seed + length, 10**6, maps)
         
         for k in range(6, 0, -1):
-            locations = optimizeLocations(newSeed - 10**k, newSeed + 10**k, 10**(k-1), maps)
-            newSeed, lowestLocation = min(locations, key=lambda x: x[1])
+            newSeed, lowestLocation = optimizeLocations(newSeed - 10**k, newSeed + 10**k, 10**(k-1), maps)
 
         part2 = min(part2, lowestLocation)
 
