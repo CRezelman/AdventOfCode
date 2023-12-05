@@ -33,7 +33,7 @@ def optimizeLocations(start: int, end: int, step: int, maps: list[Mapping]) -> t
     return min(locations, key=lambda x: x[1])
 
 
-def day4(): 
+def day5(): 
     part1 = sys.maxsize
     part2 = sys.maxsize
     maps: list[Mapping] = []
@@ -65,4 +65,4 @@ def day4():
 
     return part1, part2
 
-print(day4())
+print(day5())
