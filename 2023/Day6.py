@@ -27,7 +27,7 @@ def day6():
     x1 = (-b-math.sqrt(d)/(2*a))
     x2 = (-b+math.sqrt(d)/(2*a))
 
-    part2 = math.floor(x1 -x2)
+    part2 = math.floor(abs(x2 - x1))
 
 
     return part1, part2
