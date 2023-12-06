@@ -1,27 +1,30 @@
 import math
 
-def findRoots(a: int, b: int, c: int) -> tuple[int, int]:
-    d = (b**2) - (4*a*c)
-    x1 = (-b - math.sqrt(d)) / (2*a)
-    x2 = (-b + math.sqrt(d)) / (2*a)
-    return (x1, x2)
+class Roots:
+    def __init__(self, a: int, b: int, c: int) -> None:
+        d = (b**2) - (4*a*c)
+        self.x1 = (-b - math.sqrt(d)) / (2*a)
+        self.x2 = (-b + math.sqrt(d)) / (2*a)
+
+    def integerDistance(self) -> int:
+        return math.floor(max(self.x1, self.x2)) - math.ceil(min(self.x1, self.x2)) + 1
 
 
 def day6(): 
     part1 = 1
-    races = [(58, 434), (81, 1041), (96, 2219), (76, 1218)]
+    with open('2023/inputs/day6.txt', 'r') as file:
+        lines = file.readlines()
+
+    time = [int(value) for value in lines[0].split()[1::]]
+    distance = [int(value) for value in lines[1].split()[1::]]
+    races = list(zip(time, distance))
 
     for race in races:
-        x1, x2 = findRoots(-1, race[0], -race[1])
-        part1 *= math.floor(max(x1, x2)) - math.ceil(min(x1, x2)) + 1
+        part1 *= Roots(-1, race[0], -race[1]).integerDistance()
 
-
-    race = (58819676, 434_104_122_191_218)
     # y = -x^2 +58819679x - 434_104_122_218
-
-    x1, x2 = findRoots(-1, race[0], -race[1])
-    part2 = math.floor(max(x1, x2)) - math.ceil(min(x1, x2)) + 1
-
+    race = ( int(''.join(str(t[0]) for t in races)), int(''.join(str(t[1]) for t in races)) )
+    part2 = Roots(-1, race[0], -race[1]).integerDistance()
 
     return part1, part2
 
