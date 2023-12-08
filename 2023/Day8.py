@@ -8,6 +8,13 @@ class Node:
         self.right = right
 
 
+def findResult(instructions: str, condition: str,  nodes: list[Node], nextNode: Node) -> int:
+    for i, instruction in enumerate(itertools.cycle(instructions)):
+        nextNode =  next(node for node in nodes if node.id == (nextNode.left if instruction == 'L' else nextNode.right))
+        if nextNode.id.endswith(condition):
+            return i + 1
+    
+
 def day8(): 
     part1 = 0
     part2 = 0
@@ -24,30 +31,15 @@ def day8():
                 nodes.append(node) 
     
     nextNode = next(node for node in nodes if node.id == 'AAA')
-
-    for i, instruction in enumerate(itertools.cycle(instructions)):
-        if instruction == 'L':
-            nextNode =  next(node for node in nodes if node.id == nextNode.left)
-        if instruction == 'R':
-            nextNode =  next(node for node in nodes if node.id == nextNode.right)
-        if nextNode.id == 'ZZZ':
-            part1 = i + 1
-            break
+    part1 = findResult(instructions, 'ZZZ', nodes, nextNode)
     
     nextNodes = [node for node in nodes if node.id.endswith('A')]
     results = []
 
     for nextNode in nextNodes:
-        for i, instruction in enumerate(itertools.cycle(instructions)):
-            if instruction == 'L':
-                nextNode =  next(node for node in nodes if node.id == nextNode.left)
-            if instruction == 'R':
-                nextNode =  next(node for node in nodes if node.id == nextNode.right)
-            if nextNode.id.endswith('Z'):
-                results.append(i+1)
-                break
+        results.append(findResult(instructions, 'Z', nodes, nextNode))
 
-    part2 = math.lcm(results[0], results[1], results[2], results[3], results[4], results[5])
+    part2 = math.lcm(*results)
 
     return part1, part2
 
