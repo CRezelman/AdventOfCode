@@ -16,15 +16,11 @@ def day9():
                 diffs[count+1].append(diffs[count][i+1] - diffs[count][i])
 
             if all(value == 0 for value in diffs[count+1]):
-                endValues = [x[-1] for x in diffs]
-                startValues = [x[0] for x in diffs]
-                part1 += sum(endValues)
-                part2 += sum((-1) ** i * num for i, num in enumerate(startValues))
+                part1 += sum([x[-1] for x in diffs])
+                part2 += sum((-1) ** i * num for i, num in enumerate([x[0] for x in diffs]))
                 break
 
             count += 1
-        
-
 
     return part1, part2
 
