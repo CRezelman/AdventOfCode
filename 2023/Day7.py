@@ -73,17 +73,13 @@ def day7():
     hands: list[Hand] = []
     with open('2023/inputs/day7.txt', 'r') as f:
         for line in f:
-            line = line.strip()
-            hand, bid = line.split()
-            hands.append(Hand(hand, int(bid)))
-
-    for hand in hands:
-        hand.addMatches(countMatchingCharacters(hand.hand))
+            hand, bid = line.strip().split()
+            current = Hand(hand, int(bid))
+            current.addMatches(countMatchingCharacters(current.hand))
+            hands.append(current)
 
     hands = sorted(hands, key=cmp_to_key(compare))
-
-    for i, hand in enumerate(hands):
-        part1 += hand.bid*(i+1)
+    part1 = sum(hand.bid * (i + 1) for i, hand in enumerate(hands))
 
 
     return part1, part2
