@@ -3,7 +3,7 @@ def day18():
     part1 = 0
 
     lava = [[[0 for i in range(25)] for j in range(25)] for k in range(25)]
-    with open('C:/Git/AdventOfCode/2022/inputs/day18.txt') as f:
+    with open('2022/inputs/day18.txt') as f:
         for line in f:
             line = line.strip('\n')
             x, y, z = line.split(',')

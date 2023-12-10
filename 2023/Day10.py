@@ -21,7 +21,6 @@ MOVEMENTS = {
 }
 
 
-
 def move(start: tuple[int, int], previous: tuple[int, int], pipe: Pipe,  pipeMap: list[list[str]]) -> tuple[tuple[int, int], Pipe]:
     moves = MOVEMENTS[pipe]
 
@@ -46,17 +45,37 @@ def day10():
     pipe = Pipe.START
     currentPosition = start
     previousPosition = (start[0] + 1, start[1])
-    moves = 0
+    visited: set[tuple[int, int]] = { start }
 
     while True:
         newPosition, pipe = move(currentPosition, previousPosition, pipe, pipeMap)
         previousPosition = currentPosition
         currentPosition = newPosition
-        moves += 1
+        visited.add(currentPosition)
 
         if newPosition == start:
-            part1 = moves // 2
+            part1 = len(visited) // 2
             break
+
+    
+    for y, line in enumerate(pipeMap):
+        for x, char in enumerate(line):
+            if (y, x) in visited:
+                continue
+            
+            crosses = 0
+            x2, y2 = x, y
+
+            while x2 < len(pipeMap[0]) and y2 < len(pipeMap):
+                char2 = Pipe(pipeMap[y2][x2])
+                if (y2, x2) in visited and char2 != Pipe.NE and char2 != Pipe.SW:
+                    crosses += 1
+                x2 += 1
+                y2 += 1
+
+
+            if crosses % 2 == 1:
+                part2 += 1
 
     return part1, part2
 
