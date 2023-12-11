@@ -6,43 +6,16 @@ def day11():
     with open('2023/inputs/day11.txt', 'r') as f:
        starMap = [list(line.strip()) for line in f]
     
-    cols = []
-    rows = []
+    cols = [col_index for col_index in range(len(starMap[0])) if all(row[col_index] == '.' for row in starMap)]
+    rows = [y for y, row in enumerate(starMap) if all(value == '.' for value in row)]
+    galaxies = {(i, j) for i, row in enumerate(starMap) for j, value in enumerate(row) if value == '#'}
 
-    for y, row in enumerate(starMap):
-        if all(value == '.' for value in row):
-            rows.append(y)
 
-    for col_index in range(len(starMap[0])):
-        if all(row[col_index] == '.' for row in starMap):
-            cols.append(col_index)
-
-    galaxies = set()
-
-    for i, row in enumerate(starMap):
-        for j, value in enumerate(row):
-            if starMap[i][j] == '#':
-                galaxies.add((i, j))
-
-    comb = itertools.combinations(galaxies, 2)
-
-    for c in comb:
-        minY = min(c[0][0], c[1][0])
-        maxY = max(c[0][0], c[1][0])
-        minX = min(c[0][1], c[1][1])
-        maxX = max(c[0][1], c[1][1])
-        extrasP1 = 0
-        extrasP2 = 0
-
-        for col in cols:
-            if minX <= col <= maxX:
-                extrasP1 += 1
-                extrasP2 += 1000000 - 1
-
-        for row in rows:
-            if minY <= row <= maxY:
-                extrasP1 += 1
-                extrasP2 += 1000000 - 1
+    for c in itertools.combinations(galaxies, 2):
+        minY, maxY = sorted([c[0][0], c[1][0]])
+        minX, maxX = sorted([c[0][1], c[1][1]])
+        extrasP1 = sum(1 for col in cols if minX <= col <= maxX) + sum(1 for row in rows if minY <= row <= maxY)
+        extrasP2 = extrasP1 * (1000000 - 1)
 
         part1 += maxX - minX + maxY - minY + extrasP1
         part2 += maxX - minX + maxY - minY + extrasP2
