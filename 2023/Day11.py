@@ -20,8 +20,6 @@ def day11():
         part1 += maxX - minX + maxY - minY + extrasP1
         part2 += maxX - minX + maxY - minY + extrasP2
 
-    
-
     return part1, part2
 
 print(day11())
