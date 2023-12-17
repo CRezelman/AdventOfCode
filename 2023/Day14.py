@@ -43,29 +43,13 @@ def tiltSouth(grid: list[list[str]]):
             elif char == '#':
                 openPositions.clear()
             elif char == 'O':
-                openPos = findHighestNumber(openPositions, y)
+                openPos = findHighestNumber(openPositions, len(col) - y - 1)
                 if openPos != None:
                     grid[openPos][x] = 'O'
                     grid[len(col) - y - 1][x] = '.'
-                    openPositions.append(y)
+                    openPositions.append(len(col) - y - 1)
 
 def tiltWest(grid: list[list[str]]):
-    for y, row in enumerate(grid[::-1]):
-        openPositions = []
-        for x, char in enumerate(row):
-            if char == '.':
-                openPositions.append(x)
-            elif char == '#':
-                openPositions.clear()
-            elif char == 'O':
-                openPos = findLowestNumber(openPositions, x)
-                if openPos != None:
-                    grid[openPos][y] = 'O'
-                    grid[x][y] = '.'
-                    openPositions.append(x)
-
-
-def tiltEast(grid: list[list[str]]):
     for y, row in enumerate(grid):
         openPositions = []
         for x, char in enumerate(row):
@@ -76,24 +60,46 @@ def tiltEast(grid: list[list[str]]):
             elif char == 'O':
                 openPos = findLowestNumber(openPositions, x)
                 if openPos != None:
-                    grid[openPos][y] = 'O'
-                    grid[x][y] = '.'
+                    grid[y][openPos] = 'O'
+                    grid[y][x] = '.'
                     openPositions.append(x)
+
+
+def tiltEast(grid: list[list[str]]):
+    for y, row in enumerate(grid):
+        openPositions = []
+        for x, char in enumerate(row[::-1]):
+            if char == '.':
+                openPositions.append(len(row) - x - 1)
+            elif char == '#':
+                openPositions.clear()
+            elif char == 'O':
+                openPos = findHighestNumber(openPositions, len(row) - x - 1)
+                if openPos != None:
+                    grid[y][openPos] = 'O'
+                    grid[y][len(row) - x - 1] = '.'
+                    openPositions.append(len(row) - x - 1)
 
 def day14(): 
     part1 = 0
     part2 = 0
 
-    grid = [list(line) for line in open('2023/inputs/day14demo.txt').read().splitlines()]
-
+    grid = [list(line) for line in open('2023/inputs/day14.txt').read().splitlines()]
     tiltNorth(grid)
-
     for y, row in enumerate(grid[::-1]):
         part1 += (y+1)*row.count('O')
+    
+    grid = [list(line) for line in open('2023/inputs/day14.txt').read().splitlines()]
 
-    # tiltWest(grid)
-    tiltSouth(grid)
-    # tiltEast(grid)
+    for i in range(1000):
+        tiltNorth(grid)
+        tiltWest(grid)
+        tiltSouth(grid)
+        tiltEast(grid)
+
+    for y, row in enumerate(grid[::-1]):
+        part2 += (y+1)*row.count('O')
+
 
     return part1, part2
 

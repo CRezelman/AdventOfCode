@@ -58,21 +58,16 @@ def day16():
     for i in range(len(grid)):
         start = Light((i, 0), (0, 1))
         results.append(solve(grid, start))
-
-    for i in range(len(grid)):
         start = Light((i, len(grid)-1), (0, -1))
         results.append(solve(grid, start))
 
     for i in range(len(grid[0])):
         start = Light((0, i), (1, 0))
         results.append(solve(grid, start))
-
-    for i in range(len(grid[0])):
         start = Light((len(grid[0])-1, i), (-1, 0))
         results.append(solve(grid, start))
 
     part2 = max(results)
-    print(results)
 
 
     return part1, part2
