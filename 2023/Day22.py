@@ -1,4 +1,4 @@
-from matplotlib import pyplot as plt
+from copy import deepcopy
 
 class Point:
     def __init__(self, x: int, y: int, z: int) -> None:
@@ -11,6 +11,10 @@ class Brick:
         self.start = start
         self.end = end
         self.id = id
+
+    @property
+    def minZ(self):
+        return min(self.start.z, self.end.z)
     
 
 def populateBricks(grid: list[list[list[int | None]]], bricks: list[Brick]):
@@ -48,6 +52,7 @@ def day22():
     part1 = 0
     part2 = 0
     X, Y, Z = 10, 10, 363
+    # X, Y, Z = 3, 3, 10
     # grid[z][y][x]
     grid = [[[None for x in range(X)] for y in range(Y)] for z in range(Z)]
     bricks: list[Brick] = []
@@ -64,7 +69,6 @@ def day22():
 
     canRemove: set[int] = set()
 
-
     for brick in bricks:
         drawBrick(grid, brick, None)
         for br in bricks:
@@ -78,15 +82,18 @@ def day22():
 
     part1 = len(canRemove)
 
-    # plt.rcParams["figure.figsize"] = [7.00, 3.50]
-    # plt.rcParams["figure.autolayout"] = True
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
-    # data = numpy.array(grid)
-    # z, y, x = data.nonzero()
-    # ax.scatter(x, y, z, c=z, alpha=1)
-    # plt.show()
-            
+    for i, brick in enumerate(bricks):
+        gridCopy = deepcopy(grid)
+        bricksCopy = deepcopy(bricks)
+        bricksMoved = set()
+        drawBrick(gridCopy, brick, None)
+        for br in bricksCopy:
+            if br.id == brick.id:
+                continue
+            while canBrickMoveDown(gridCopy, br):
+                moveBrickDown(gridCopy, br)
+                bricksMoved.add(br.id)
+        part2 += len(bricksMoved)
 
     return part1, part2
 
