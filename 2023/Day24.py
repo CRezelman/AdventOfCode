@@ -1,4 +1,5 @@
 from itertools import combinations
+import z3
 
 class Hail:
     def __init__(self, px, py, pz, vx, vy, vz, id) -> None:
@@ -27,6 +28,24 @@ def findIntersection(hail1: Hail, hail2: Hail):
     resY = hail1.m * resX + hail1.c
     return (resX, resY)
 
+def solvePart2(hails: list[Hail]):
+    x = z3.Real('x')
+    y = z3.Real('y')
+    z = z3.Real('z')
+    vx = z3.Real('vx')
+    vy = z3.Real('vy')
+    vz = z3.Real('vz')
+    s = z3.Solver()
+
+    for i, hail in enumerate(hails):
+        t_i = z3.Real(f"t_{i}")
+        s.add(hail.px + hail.vx * t_i == x + vx * t_i)
+        s.add(hail.py + hail.vy * t_i == y + vy * t_i)
+        s.add(hail.pz + hail.vz * t_i == z + vz * t_i)
+
+    m = s.model()
+    return int(str(m[x])) + int(str(m[y])) + int(str(m[z]))
+
 
 def day24():
     part2 = 0
@@ -51,8 +70,8 @@ def day24():
             (hail2.px > x and hail2.vx > 0):
             continue
 
-        if low <= x <= high and low <= y <= high:
-            part1 += 1
+        part1 += int(low <= x <= high and low <= y <= high)
+    part2 = solvePart2(hails)
 
 
     return part1, part2
