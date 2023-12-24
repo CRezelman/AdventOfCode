@@ -1,69 +1,64 @@
-from collections import deque        
+grid = open('2023/inputs/day23.txt', 'r').read().splitlines()
+start = (0, grid[0].index('.'))
+end = (len(grid) - 1, grid[-1].index('.'))
 
-def getNeighbors(grid, y, x, R, C):
-    DIRECTIONS = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-    if grid[y][x] == 'v':
-        yield y + 1, x
-        return
+points = [start, end]
 
-    if grid[y][x] == '^':
-        yield y - 1, x
-        return
-
-    if grid[y][x] == '>':
-        yield y, x + 1
-        return
-
-    if grid[y][x] == 'v':
-        yield y, x - 1
-        return
-
-    for direction in DIRECTIONS:
-        dy, dx = direction
-        newPoint = y + dy, x + dx
-        if  not (0 <= y + dy < R) or not (0 <= x + dx < C) or grid[y+dy][x+dx] == '#':
+for r, row in enumerate(grid):
+    for c, ch in enumerate(row):
+        if ch == '#':
             continue
+        neighbours = 0
+        for nr, nc in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
+            if 0 <= nr < len(grid) and 0 <= nc < len(grid[0]) and grid[nr][nc] != '#':
+                neighbours += 1
 
-        yield newPoint
+        if neighbours >= 3:
+            points.append((r, c))
+
+graph = { pt: {} for pt in points }
+dirs = {
+    '^': [(-1,  0)],
+    'v': [( 1,  0)],
+    '<': [( 0, -1)],
+    '>': [( 0,  1)],
+    '.': [(-1,  0), ( 1,  0), ( 0, -1), ( 0,  1)]
+}
+
+for sr, sc in points:
+    stack = [(0, sr, sc)]
+    seen = {(sr, sc)}
+
+    while stack:
+        n, r, c = stack.pop(0)
+
+        if n != 0 and (r, c) in points:
+            graph[(sr, sc)][(r, c)] = n
+            continue
         
+        # for dr, dc in  [(-1,  0), ( 1,  0), ( 0, -1), ( 0,  1)]:
+        for dr, dc in dirs[grid[r][c]]:
+            nr = r + dr
+            nc = c + dc
+            if 0 <= nr < len(grid) and 0 <= nc < len(grid[0]) and grid[nr][nc] != '#' and (nr, nc) not in seen:
+                stack.append((n + 1, nr, nc))
+                seen.add((nr, nc))
 
-def solve(grid):
-    R = len(grid)
-    C = len(grid[0])
-    yGoal, xGoal = R - 1, C - 2
-    y, x = 0, 1
-    q = deque()
-    q.append((y, x, set()))
-    cost = dict()
-    cost[(y, x)] = 0
+seen = set()
 
-    while q:
-        (y, x, path) = q.popleft()
+def dfs(pt):
+    if pt == end:
+        return 0
+    
+    m = -float('inf')
 
-        if y == yGoal and x == xGoal:
-            continue
+    seen.add(pt)
+    for nx in graph[pt]:
+        if nx not in seen:
+            m = max(m, dfs(nx) + graph[pt][nx])
+    seen.remove(pt)
+    return m
 
-        for (yi, xi) in getNeighbors(grid, y, x, R, C):
-            newCost = cost[(y, x)] + 1
+part1 = dfs(start)
 
-            if (yi, xi) in path:
-                continue
-
-            if (yi, xi) not in cost or newCost > cost[(yi, xi)]:
-                cost[(yi, xi)] = newCost
-
-                new_path = path.copy()
-                new_path.add((yi, xi))
-
-                q.appendleft((yi, xi, new_path))
-
-    return cost[(yGoal, xGoal)]
-
-def day23():
-    part2 = 0
-    grid = [list(line) for line in open('2023/inputs/day23.txt', 'r').read().splitlines()]
-    part1 = solve(grid)
-
-    return part1, part2
-
-print(day23())
+print(part1, 0)
