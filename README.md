@@ -15,3 +15,5 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 ```
+
+Run `python scripts/generate_day_file.py <year> <day>` to generate boilerplate code for a given new day
