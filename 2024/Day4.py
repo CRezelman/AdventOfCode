@@ -1,5 +1,6 @@
 """Day 4 Solve"""
 from utilities.input import read_grid
+from utilities.grid import search_grid
 
 def find_sprite_count(grid, sprites):
     """Find all occurrences of multiple sprites (subgrids) in a grid"""
@@ -31,7 +32,7 @@ def find_sprite_count(grid, sprites):
 
     return total_count
 
-def find_word_count(grid, word):
+def find_word_count(grid: list[list[str]], word: str):
     """Find all occurrences of a word in a grid"""
     count = 0
     rows = len(grid)
@@ -45,13 +46,15 @@ def find_word_count(grid, word):
             if grid[y + i * dy][x + i * dx] != word[i]:
                 return False
         return True
+ 
+    def condition_met(y, x):
+        """Callback function to check if the word is in the grid"""
+        nonlocal count
+        for dx, dy in [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]:
+            if search_direction(x, y, dx, dy):
+                count += 1
 
-    for y in range(cols):
-        for x in range(rows):
-            if grid[y][x] == word[0]:
-                for dx, dy in [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]:
-                    if search_direction(x, y, dx, dy):
-                        count += 1
+    search_grid(grid=grid, condition=word[0], callback=condition_met)
 
     return count
 
