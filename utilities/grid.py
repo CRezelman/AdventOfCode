@@ -11,3 +11,7 @@ def search_grid(grid: list[list], condition: int | str | list, callback: lambda 
                 callback(y, x)
 
     return None
+
+def string_to_int(grid: list[list]) -> None:
+    """Convert grid of strings to int"""
+    return list(map(lambda row: list(map(int, row)), grid))
