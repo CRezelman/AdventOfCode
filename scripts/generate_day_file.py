@@ -16,7 +16,6 @@ def day{day}():
     return part1, part2
 
 print(day{day}())
-
 '''
 
     directory = os.path.join(os.path.dirname(__file__), f"../{year}")
