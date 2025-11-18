@@ -5,6 +5,9 @@ import os
 def generate_day_file(year: int, day: int):
     """Generates File for a new Day"""
     content = f'''"""Day {day} Solve"""
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utilities.input import read_lines
 
 def day{day}():
