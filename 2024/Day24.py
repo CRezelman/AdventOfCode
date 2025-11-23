@@ -2,6 +2,7 @@
 import sys
 import os
 from dataclasses import dataclass
+from typing import Literal
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utilities.input import read_lines
 
@@ -9,13 +10,13 @@ from utilities.input import read_lines
 class Instruction:
     input1: str
     input2: str
-    op: str
+    op: Literal['AND', 'OR', 'XOR']
     output: str
 
 
-def parse_data(lines) -> tuple[dict[str, bool], list[Instruction]]:
+def parse_data(lines: list[str]) -> tuple[dict[str, bool], dict[str, Instruction]]:
     values = {}
-    instructions = []
+    gates = {}
 
     i = 0
     while i < len(lines) and lines[i].strip():
@@ -30,41 +31,52 @@ def parse_data(lines) -> tuple[dict[str, bool], list[Instruction]]:
         left, out = lines[i].split("->")
         out = out.strip()
         p1, op, p2 = left.strip().split()
-
-        instructions.append(
-            Instruction(input1=p1, input2=p2, op=op, output=out)
-        )
-
+        gates[out] = Instruction(p1, p2, op, out)
         i += 1
 
-    return values, instructions
+    return values, gates
 
+
+def evaluate_wire(wire: str, values: dict[str, bool], gates: dict[str, Instruction], cache: dict[str, bool]) -> bool:
+    if wire in cache:
+        return cache[wire]
+
+    if wire in values:
+        cache[wire] = values[wire]
+        return values[wire]
+    instr = gates[wire]
+
+    left = evaluate_wire(instr.input1, values, gates, cache)
+    right = evaluate_wire(instr.input2, values, gates, cache)
+
+    match instr.op:
+        case "AND":
+            result = left and right
+        case "OR":
+            result = left or right
+        case "XOR":
+            result = (left != right)
+    cache[wire] = result
+    return result
 
 
 def day24():
     """Day 24"""
     part1 = 0
     part2 = 0
+
     lines = read_lines(2024, 24)
-    values, instructions = parse_data(lines)
+    values, gates = parse_data(lines)
 
-    while len(instructions):
-       for instr in instructions:
-           if instr.input1 in values and instr.input2 in values:
-               if instr.op == "AND":
-                   values[instr.output] = values[instr.input1] and values[instr.input2]
-               elif instr.op == "OR":
-                   values[instr.output] = values[instr.input1] or values[instr.input2]
-               elif instr.op == "XOR":
-                   values[instr.output] = values[instr.input1] != values[instr.input2]
+    cache = {}
 
-               instructions.remove(instr)
-               break 
-           
-    values = dict(sorted(values.items(), reverse=True))
-    binary_str = ''.join(['1' if values[key] else '0' for key in values.keys() if key.startswith("z")])
-    part1 = int(binary_str, 2)
+    for wire in gates:
+        if evaluate_wire(wire, values, gates, cache):
+            if wire.startswith("z"):
+                bit_index = int(wire[1:])
+                part1 += (1 << bit_index)
 
     return part1, part2
+
 
 print(day24())
