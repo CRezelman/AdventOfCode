@@ -16,20 +16,20 @@ def day1():
         steps = int(line[1:])
 
         if direction == 'R':
-            first = (100 - location) % 100
-            offset = first == 0
+            min_steps = 100 - location
+            location += steps
 
-            if first <= steps:
-                part2 += 1 - int(offset) + (steps - first) // 100
-            location = (location + steps) % 100
+            if steps >= min_steps:
+                part2 += location // 100
         else:
-            first = location % 100
-            offset = first == 0
+            min_steps = location
+            location -= steps
 
-            if first <= steps:
-                part2 += 1 - int(offset) + (steps - first) // 100
-            location = (location - steps) % 100
-  
+            if steps >= min_steps:
+                offset = min_steps == 0
+                part2 += (100 - location) // 100 - offset
+        location %= 100
+
         if location == 0:
             part1 += 1
 
