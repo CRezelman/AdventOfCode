@@ -9,33 +9,26 @@ def day1():
     part1 = 0
     part2 = 0
     lines = read_lines(2025, 1)
-
     location = 50
 
     for line in lines:
         direction = line[0]
         steps = int(line[1:])
 
-        start = location
-
         if direction == 'R':
+            first = (100 - location) % 100
+            offset = first == 0
+
+            if first <= steps:
+                part2 += 1 - int(offset) + (steps - first) // 100
             location = (location + steps) % 100
-
-            first = (100 - start) % 100
-            if first == 0:
-                first = 100
-
-            if first <= steps:
-                part2 += 1 + (steps - first) // 100
         else:
-            location = (location - steps) % 100
-
-            first = start % 100
-            if first == 0:
-                first = 100
+            first = location % 100
+            offset = first == 0
 
             if first <= steps:
-                part2 += 1 + (steps - first) // 100
+                part2 += 1 - int(offset) + (steps - first) // 100
+            location = (location - steps) % 100
   
         if location == 0:
             part1 += 1
