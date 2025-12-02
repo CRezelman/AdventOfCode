@@ -18,21 +18,20 @@ def day2():
         for id in range(low, high + 1):
             id_str = str(id)
             length = len(id_str)
-            found_ids = set()
+            id_invalid = False
 
-            for div in range(2, length + 1):
-                size = length // div
-                if length % div != 0:
+            for size in range(1, length // 2 + 1):
+                if length % size != 0:
                     continue
-
-                substrings = [id_str[i*size:(i+1)*size] for i in range(div)]
-
-                if all(sub == substrings[0] for sub in substrings):
-                    found_ids.add(id)
-                    if div == 2:
+                sub = id_str[:size]
+                repetitions = length // size
+                if sub * repetitions == id_str:
+                    id_invalid = True
+                    if repetitions == 2:
                         part1 += id
 
-            part2 += sum(found_ids)
+            if id_invalid:
+                part2 += id
 
     return part1, part2
 
