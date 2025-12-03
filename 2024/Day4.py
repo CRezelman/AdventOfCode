@@ -80,7 +80,7 @@ def day4():
     """Day 4""" 
     part1 = 0
     part2 = 0
-    data = read_grid(2024, 4)
+    data = read_grid(2024, 4).grid
     target_p1 = 'XMAS'
     target_p2 = generate_cross_sprites('MAS')
 

@@ -35,7 +35,7 @@ def day8():
     """Day 8"""
     part1 = 0
     part2 = 0
-    grid = read_grid(2024, 8)
+    grid = read_grid(2024, 8).grid
     rows = len(grid)
     cols = len(grid[0])
     antennas = search_grid(grid)

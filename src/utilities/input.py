@@ -4,6 +4,8 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+from utilities.grid import Grid
+
 load_dotenv()
 
 def fetch_input(year: int, day: int, session_token: str) -> str:
@@ -55,6 +57,6 @@ def read_lines(year: int, day: int, demo: bool = False) -> list[str]:
     return _read_or_fetch(year, day, demo).splitlines()
 
 
-def read_grid(year: int, day: int, demo: bool = False) -> list[list[str]]:
+def read_grid(year: int, day: int, demo: bool = False) -> Grid:
     """Reads input as a grid of characters"""
-    return [list(line) for line in read_lines(year, day, demo)]
+    return Grid([list(line) for line in read_lines(year, day, demo)])

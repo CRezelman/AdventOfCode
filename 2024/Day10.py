@@ -71,7 +71,7 @@ def day10():
     """Day 10"""
     part1 = 0
     part2 = 0
-    grid = read_grid(2024, 10)
+    grid = read_grid(2024, 10).grid
     grid = string_to_int(grid)
 
     result_p1 = find_reachable_end_counts(grid)

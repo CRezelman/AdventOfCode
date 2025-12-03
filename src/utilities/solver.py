@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 import time
 from rich.console import Console
+from utilities.grid import Grid
 from utilities.input import read_lines, read_grid, read_line
 
 console = Console()
@@ -16,9 +17,9 @@ class Solver(ABC):
         self.part1: int = 0
         self.part2: int = 0
 
-        self.lines = None
-        self.grid = None
-        self.line = None
+        self.lines: list[str] = None
+        self.grid: Grid = None
+        self.line: str = None
 
         match input_type:
             case InputType.LINES:

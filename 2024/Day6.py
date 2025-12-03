@@ -7,7 +7,7 @@ def day6():
     """Day 6""" 
     part1 = 0
     part2 = 0
-    grid = read_grid(2024, 6, False)
+    grid = read_grid(2024, 6, False).grid
     current_pos = (0, 0)
     current_dir = (-1, 0)
     obstacles = []

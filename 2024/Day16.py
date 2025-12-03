@@ -126,7 +126,7 @@ def dijkstra_all_paths(maze, start, end):
 
 def day16():
     """Day 16"""
-    grid = read_grid(2024, 16)
+    grid = read_grid(2024, 16).grid
 
     rows, cols = len(grid), len(grid[0])
     start = end = None

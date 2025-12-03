@@ -77,7 +77,7 @@ def count_cheats(dist_start, dist_end, max_cheat_radius, min_saving):
 
 def day20():
     """Day 20"""
-    grid = read_grid(2024, 20)
+    grid = read_grid(2024, 20).grid
 
     start = find_in_grid(grid, 'S')
     end = find_in_grid(grid, 'E')

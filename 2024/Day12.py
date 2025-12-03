@@ -88,7 +88,7 @@ def day12():
     """Day 12"""
     part1 = 0
     part2 = 0
-    grid = read_grid(2024, 12, False)
+    grid = read_grid(2024, 12, False).grid
 
     result = find_groups(grid)
     for group in result:
