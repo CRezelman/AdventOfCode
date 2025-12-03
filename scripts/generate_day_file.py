@@ -5,20 +5,15 @@ import os
 def generate_day_file(year: int, day: int):
     """Generates File for a new Day"""
     content = f'''"""Day {day} Solve"""
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from utilities.input import read_lines
+from utilities.solver import InputType, Solver
 
-def day{day}():
-    """Day {day}"""
-    part1 = 0
-    part2 = 0
-    lines = read_lines({year}, {day})
+class Day{day}(Solver):
 
-    return part1, part2
-
-print(day{day}())
+    def solve(self) -> None:
+        for line in self.lines:
+            pass
+    
+Day{day}({year}, {day}, InputType.LINES).run()
 '''
 
     directory = os.path.join(os.path.dirname(__file__), f"../{year}")
