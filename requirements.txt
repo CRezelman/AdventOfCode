@@ -1,0 +1,8 @@
+-e git+https://github.com/CRezelman/AdventOfCode.git@848a935ce2904b907217993098e26cc45c1e0e3a#egg=aoc_utilities
+markdown-it-py==4.0.0
+mdurl==0.1.2
+mpmath==1.3.0
+networkx==3.6
+numpy==2.3.5
+Pygments==2.19.2
+rich==14.2.0
