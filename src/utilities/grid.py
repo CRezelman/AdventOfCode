@@ -41,6 +41,22 @@ class Grid:
                 if 0 <= nr < self.rows and 0 <= nc < self.cols:
                     neighbors.append((nr, nc))
         return neighbors
+    
+    
+    def get_neighbors_conditional(self, r: int, c: int, condition_value: int | str, include_diagonals: bool = False) -> list[tuple[int, int]]:
+        conditional_neighbours = []
+        for dr in [-1, 0, 1]:
+            for dc in [-1, 0, 1]:
+                if dr == 0 and dc == 0:
+                    continue
+                if not include_diagonals and dr != 0 and dc != 0:
+                    continue
+
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < self.rows and 0 <= nc < self.cols and self.grid[nr][nc] == condition_value:
+                    conditional_neighbours.append((nr, nc))
+        return conditional_neighbours
+
 
     def get_value(self, r: int, c: int):
         if 0 <= r < self.rows and 0 <= c < self.cols:
@@ -52,6 +68,11 @@ class Grid:
             self.grid[r][c] = value
         return None
     
+    def set_multiple(self, positions: set[tuple[int, int]], value) -> None:
+        for r, c in positions:
+            self.set_value(r, c, value)
+        return None
+
     def print_grid(self) -> None:
         for row in self.grid:
             print("".join(map(str, row)))
