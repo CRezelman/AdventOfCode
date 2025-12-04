@@ -1,31 +1,24 @@
 """Day 1 Solve"""
 from collections import Counter
+from utilities.solver import InputType, Solver
 
-def day1():
-    """Day 1""" 
-    part1 = 0
-    part2 = 0
-    data = open('2024/inputs/day1.txt', 'r', encoding='utf-8').read().strip().split('\n')
-    left = []
-    right = []
+class Day1(Solver):
+    def solve(self) -> None:
+        left = []
+        right = []
+        for line in self.lines:
+            left_str, right_str = line.split('   ')
+            left.append(int(left_str))
+            right.append(int(right_str))
 
-    for item in data:
-        item = item.split('   ')
-        left.append(int(item[0]))
-        right.append(int(item[1]))
+        left.sort()
+        right.sort()
 
-    left.sort()
-    right.sort()
+        right_counter = dict(Counter(right))
+        for l, r in zip(left, right):
+            self.part1 += abs(l - r)
+        for item in left:
+            self.part2 += right_counter.get(item, 0) * item
 
-    right_counter = dict(Counter(right))
 
-
-    for l, r in zip(left, right):
-        part1 += abs(l - r)
-
-    for item in left:
-        part2 += right_counter.get(item, 0) * item
-
-    return part1, part2
-
-print(day1())
+Day1(2024, 1, InputType.LINES).run()

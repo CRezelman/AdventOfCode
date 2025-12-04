@@ -3,7 +3,7 @@ from utilities.solver import InputType, Solver
 
 class Day4(Solver):
     def find_possible_rolls(self, r: int, c: int) -> int:
-        neighbours = self.grid.get_neighbors_conditional(r, c, '@', include_diagonals=True)
+        neighbours = self.grid.get_neighbours_conditional(r, c, '@', include_diagonals=True)
         if len(neighbours) < 4:
             self.rolls.add((r, c))
 

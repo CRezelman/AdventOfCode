@@ -28,7 +28,7 @@ class Grid:
         self.grid = list(map(lambda row: list(map(int, row)), self.grid))
 
 
-    def get_neighbors(self, r: int, c: int, include_diagonals: bool = False) -> list[tuple[int, int]]:
+    def get_neighbours(self, r: int, c: int, include_diagonals: bool = False) -> list[tuple[int, int]]:
         neighbors = []
         for dr in [-1, 0, 1]:
             for dc in [-1, 0, 1]:
@@ -43,7 +43,7 @@ class Grid:
         return neighbors
     
     
-    def get_neighbors_conditional(self, r: int, c: int, condition_value: int | str, include_diagonals: bool = False) -> list[tuple[int, int]]:
+    def get_neighbours_conditional(self, r: int, c: int, condition_value: int | str, include_diagonals: bool = False) -> list[tuple[int, int]]:
         conditional_neighbours = []
         for dr in [-1, 0, 1]:
             for dc in [-1, 0, 1]:
