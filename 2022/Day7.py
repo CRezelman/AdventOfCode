@@ -1,91 +1,83 @@
+"""Day 7 Solve"""
+from utilities.solver import InputType, Solver
+import networkx as nx
 
-class Node:
-    def __init__(self, key, parent):
-        self.key = key
-        self.parent = parent
-        self.size = 0
-        self.child = []
+class Day7(Solver):
 
-    def addNode(self, key, parent):
-        self.child.append(Node(key, parent))
+    def build_fs(self):
+        G = nx.DiGraph()
+        cwd = []
 
-    def __repr__(self):
-        return repr(vars(self))
+        def current_path():
+            return "/"  + "/".join(cwd)
 
-    def __str__(self) -> str:
-        return str(self.__dict__)
+        G.add_node("/", type="dir", size=0)
 
-def checkSize(node: Node, spaceReq, possibleNodes):
-    for child in node.child:
-        if child.size >= spaceReq and len(child.child) != 0:
-            possibleNodes.append(child.size)
-            checkSize(child, spaceReq, possibleNodes)
+        i = 0
+        while i < len(self.lines):
+            line = self.lines[i]
 
-# def size(node, sizes):
-#     for child in node.child:
-#         if len(child.child) != 0:
-#             sizes.append(child.size)
-
-
-def day7():
-    part1 = 0
-    part2 = 0
-    currentDir = ''
-    depth = 0
-    with open('2022/inputs/day7.txt') as f:
-        for i, line in enumerate(f):
-            line = line.strip('\n')
-            if '$ cd /' in line:
-                root = Node(line.split(' ')[2], 0)
-                currentDir = root
-
-            elif 'dir' in line:
-                currentDir.addNode(line.split(' ')[1], currentDir)
-
-            elif '$ cd' in line:
-                newDir = line.split(' ')[2]
-                if newDir == '..':
-                    depth -= 1
-                    if currentDir.size <= 100000:
-                        part1 += currentDir.size
-                    if depth == 0:
-                        currentDir = root
-                    else:
-                        currentDir.parent.size += currentDir.size
-                        currentDir = currentDir.parent
-                    
-
+            if line.startswith("$ cd"):
+                target = line.split()[-1]
+                if target == "/":
+                    cwd = []
+                elif target == "..":
+                    if cwd:
+                        cwd.pop()
                 else:
-                    depth += 1
-                    for child in currentDir.child:
-                        if child.key == newDir:
-                            currentDir = child
+                    cwd.append(target)
+                i += 1
+                continue
 
-            elif '$' not in line and 'dir' not in line:
-                currentDir.addNode(line.split(' ')[1], currentDir)
-                for child in currentDir.child:
-                    if child.key == line.split(' ')[1]:
-                        child.size = int(line.split(' ')[0])
-                currentDir.size += int(line.split(' ')[0])
+            if line.startswith("$ ls"):
+                i += 1
+                while i < len(self.lines) and not self.lines[i].startswith("$"):
+                    entry = self.lines[i].strip()
+                    parent = current_path()
 
-    root.size = 0
-    for child in root.child:
-        root.size += child.size
+                    if entry.startswith("dir"):
+                        _, name = entry.split()
+                        path = parent.rstrip("/") + "/" + name
+                        if path not in G:
+                            G.add_node(path, type="dir", size=0)
+                            G.add_edge(parent, path)
+                    else:
+                        size_str, name = entry.split()
+                        size = int(size_str)
+                        path = parent.rstrip("/") + "/" + name
+                        G.add_node(path, type="file", size=size)
+                        G.add_edge(parent, path)
+                    i += 1
+                continue
 
-    spaceRequired = root.size - 40000000
-    print(spaceRequired)
+            i += 1
 
-    # part2 = checkSize(root, spaceRequired)
-    possibleNodes = []
-    possibleNodes.append(root.size)
-    checkSize(root, spaceRequired, possibleNodes)
-    part2 = min(possibleNodes)
+        return G
+
+    def dir_size(self, G: nx.DiGraph, node):
+        total = 0
+        for n in set(nx.descendants(G, node)) | {node}:
+            total += G.nodes[n]["size"]
+        return total
+
+    def solve(self) -> None:
+        G = self.build_fs()
+
+        dir_sizes = {
+            node: self.dir_size(G, node)
+            for node in G.nodes
+            if G.nodes[node]["type"] == "dir"
+        }
+
+        self.part1 = sum(size for size in dir_sizes.values() if size <= 100_000)
+
+        total_space = 70_000_000
+        needed = 30_000_000
+        used = dir_sizes["/"]
+        free = total_space - used
+        need_more = needed - free
+        self.part2 = min(size for size in dir_sizes.values() if size >= need_more)
 
 
-    # print(root.size)
-    # print(root)
 
-    return part1, part2
-
-print(day7())
-
+Day7(2022, 7, InputType.LINES).run()
