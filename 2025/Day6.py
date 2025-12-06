@@ -1,5 +1,5 @@
 """Day 6 Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 import math
 
 class Day6(Solver):
