@@ -14,7 +14,7 @@ def fetch_input(year: int, day: int, session_token: str) -> str:
     headers = {'Cookie': f'session={session_token}'}
     response = requests.get(url, headers=headers)
     response.raise_for_status()
-    return response.text.strip()
+    return response.text
 
 
 def _get_input_file(year: int, day: int, demo: bool = False) -> Path:
@@ -25,12 +25,12 @@ def _get_input_file(year: int, day: int, demo: bool = False) -> Path:
     return file_path
 
 
-def _read_or_fetch(year: int, day: int, demo: bool = False) -> str:
+def _read_or_fetch(year: int, day: int, demo: bool = False, strip: bool = True) -> str:
     """Reads the input file if it exists, otherwise fetches it"""
     file_path = _get_input_file(year, day, demo)
 
     if file_path.exists():
-        return file_path.read_text(encoding="utf-8").strip()
+        return file_path.read_text(encoding="utf-8").strip() if strip else file_path.read_text(encoding="utf-8")
     
     if demo:
         raise FileNotFoundError(f"Demo input file not found: {file_path}")
@@ -42,21 +42,21 @@ def _read_or_fetch(year: int, day: int, demo: bool = False) -> str:
     try:
         input_data = fetch_input(year, day, session_token)
         file_path.write_text(input_data, encoding="utf-8")
-        return input_data
+        return input_data.strip() if strip else input_data
     except requests.exceptions.HTTPError as e:
         raise RuntimeError(f"Failed to fetch input data: {e}") from e
 
 
-def read_line(year: int, day: int, demo: bool = False) -> str:
+def read_line(year: int, day: int, demo: bool = False, strip: bool = True) -> str:
     """Reads input as a single line"""
-    return _read_or_fetch(year, day, demo)
+    return _read_or_fetch(year, day, demo, strip)
 
 
-def read_lines(year: int, day: int, demo: bool = False) -> list[str]:
+def read_lines(year: int, day: int, demo: bool = False, strip: bool = True) -> list[str]:
     """Reads input as a list of lines"""
-    return _read_or_fetch(year, day, demo).splitlines()
+    return _read_or_fetch(year, day, demo, strip).splitlines()
 
 
-def read_grid(year: int, day: int, demo: bool = False) -> Grid:
+def read_grid(year: int, day: int, demo: bool = False, strip: bool = True) -> Grid:
     """Reads input as a grid of characters"""
-    return Grid([list(line) for line in read_lines(year, day, demo)])
+    return Grid([list(line) for line in read_lines(year, day, demo, strip)])

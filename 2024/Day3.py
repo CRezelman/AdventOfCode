@@ -1,6 +1,6 @@
 """Day 3 Solve"""
 import re
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day3(Solver):
     def solve(self) -> None:
@@ -22,4 +22,4 @@ class Day3(Solver):
             if match[4]:
                 must_match = False
     
-Day3(2024, 3, InputType.LINES).run()
+Day3(2024, 3).run()

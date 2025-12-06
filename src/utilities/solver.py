@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from enum import Enum
 import time
 from rich.console import Console
 from utilities.grid import Grid
@@ -7,29 +6,14 @@ from utilities.input import read_lines, read_grid, read_line
 
 console = Console()
 
-class InputType(Enum):
-    LINES = 1
-    GRID = 2
-    SINGLE_LINE = 3
-
 class Solver(ABC):
-    def __init__(self, year: int, day: int, input_type: InputType = InputType.LINES, demo: bool = False):
+    def __init__(self, year: int, day: int, demo: bool = False, strip: bool = True) -> None:
         self.part1: int = 0
         self.part2: int = 0
 
-        self.lines: list[str] = None
-        self.grid: Grid = None
-        self.line: str = None
-
-        match input_type:
-            case InputType.LINES:
-                self.lines = read_lines(year, day, demo)
-            case InputType.GRID:
-                self.grid = read_grid(year, day, demo)
-            case InputType.SINGLE_LINE:
-                self.line = read_line(year, day, demo)
-            case _:
-                raise ValueError("Invalid input type")
+        self.lines: list[str] = read_lines(year, day, demo, strip)
+        self.grid: Grid = read_grid(year, day, demo, strip)
+        self.line: str = read_line(year, day, demo, strip)
 
         console.rule(f"[bold cyan]Advent of Code {year} - Day {day} {'(Demo)' if demo else ''}[/bold cyan]")
 

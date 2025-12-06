@@ -1,5 +1,5 @@
 """Day 4 Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day4(Solver):
     def find_possible_rolls(self, r: int, c: int) -> int:
@@ -22,4 +22,4 @@ class Day4(Solver):
             self.part2 += len(self.rolls)
             state += 1
     
-Day4(2025, 4, InputType.GRID).run()
+Day4(2025, 4).run()

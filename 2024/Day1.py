@@ -1,6 +1,6 @@
 """Day 1 Solve"""
 from collections import Counter
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day1(Solver):
     def solve(self) -> None:
@@ -21,4 +21,4 @@ class Day1(Solver):
             self.part2 += right_counter.get(item, 0) * item
 
 
-Day1(2024, 1, InputType.LINES).run()
+Day1(2024, 1).run()

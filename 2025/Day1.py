@@ -1,5 +1,5 @@
 """Day 1 Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day1(Solver):
     def solve(self) -> None:
@@ -23,5 +23,5 @@ class Day1(Solver):
             if location == 0:
                 self.part1 += 1
     
-Day1(2025, 1, InputType.LINES).run()
+Day1(2025, 1).run()
 

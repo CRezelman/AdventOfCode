@@ -1,5 +1,5 @@
 """Day 5 Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day5(Solver):
     def solve(self) -> None:
@@ -25,4 +25,4 @@ class Day5(Solver):
         self.part1 = sum(any(min_id <= available_id <= max_id for min_id, max_id in self.merged_fresh_ranges) for available_id in self.available)
         self.part2 = sum(max_id - min_id + 1 for min_id, max_id in self.merged_fresh_ranges)
     
-Day5(2025, 5, InputType.LINES).run()
+Day5(2025, 5).run()

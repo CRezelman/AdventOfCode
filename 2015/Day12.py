@@ -1,5 +1,5 @@
 """Day 12 Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 import json
 
 class Day12(Solver):
@@ -24,4 +24,4 @@ class Day12(Solver):
         self.part1 = walk(data, ignore_red=False)
         self.part2 = walk(data, ignore_red=True)
 
-Day12(2015, 12, InputType.SINGLE_LINE).run()
+Day12(2015, 12).run()

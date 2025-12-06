@@ -1,5 +1,5 @@
 """Day 3 Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day3(Solver):
     def find_max_values(self, values: list[int], digits: int) -> int:
@@ -21,4 +21,4 @@ class Day3(Solver):
             self.part1 += self.find_max_values(values, 2)
             self.part2 += self.find_max_values(values, 12)
     
-Day3(2025, 3, InputType.LINES).run()
+Day3(2025, 3).run()

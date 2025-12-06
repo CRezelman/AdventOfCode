@@ -1,5 +1,5 @@
 """Day 2 Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day2(Solver):
     def solve(self) -> None:
@@ -26,4 +26,4 @@ class Day2(Solver):
                 if id_invalid:
                     self.part2 += id
     
-Day2(2025, 2, InputType.SINGLE_LINE).run()
+Day2(2025, 2).run()

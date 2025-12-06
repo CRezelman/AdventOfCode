@@ -1,5 +1,5 @@
 """Day 2 Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day2(Solver):
     def is_increasing(self, arr:list[int]) -> bool:
@@ -34,4 +34,4 @@ class Day2(Solver):
                 self.part2 += 1
 
 
-Day2(2024, 2, InputType.LINES).run()
+Day2(2024, 2).run()
