@@ -5,29 +5,6 @@ from collections import deque
 class Day7(Solver):
     def solve(self) -> None:
         start = self.grid.find_in_grid("S")
-        queue = deque([start])
-        visited = set()
-
-        while queue:
-            y, x = queue.popleft()
-            ny, nx = y + 1, x
-
-            if not self.grid.is_in_bounds(ny, nx):
-                continue
-
-            if self.grid.get_value(ny, nx) == '^':
-                if (ny, nx) not in visited:
-                    self.part1 += 1
-                    visited.add((ny, nx))
-
-                queue.append((ny, nx - 1))
-                queue.append((ny, nx + 1))
-
-            else:
-                if (ny, nx) not in visited:
-                    visited.add((ny, nx))
-                    queue.append((ny, nx))
-
 
         current = [0] * self.grid.cols
         current[start[1]] = 1
@@ -41,6 +18,7 @@ class Day7(Solver):
                     continue
 
                 if self.grid.get_value(r, c) == '^':
+                    self.part1 += 1
                     if c > 0:
                         next_row[c - 1] += count
                     if c < self.grid.cols - 1:

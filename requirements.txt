@@ -1,4 +1,4 @@
--e git+https://github.com/CRezelman/AdventOfCode.git@b5d4ac4a78b4949e1ba6fe2f2188c3b15a5c5ec9#egg=aoc_utilities
+-e git+https://github.com/CRezelman/AdventOfCode.git@c4f674cfc2ef79e0a2acbe1eca4fbda8ac006669#egg=aoc_utilities
 certifi==2025.11.12
 charset-normalizer==3.4.4
 dotenv==0.9.9
