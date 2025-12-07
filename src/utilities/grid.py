@@ -7,7 +7,7 @@ class Grid:
         self.rows = len(grid)
         self.cols = len(grid[0])
 
-    def search_grid(self, condition: int | str | list, callback: Callable[[int, int], None]) -> None:
+    def search_grid(self, condition: int | str | list, callback: Callable[[int, int], None]) -> Callable | None:
         """Search the grid for a condition and execute a callback"""
         for r in range(self.rows):
             for c in range(self.cols):
@@ -15,7 +15,7 @@ class Grid:
                     callback(r, c)
         return None
     
-    def find_in_grid(self, condition: int | str | list) -> None:
+    def find_in_grid(self, condition: int | str | list) -> tuple[int, int] | None:
         """Search the grid for a condition"""
         for r in range(self.rows):
             for c in range(self.cols):
@@ -56,6 +56,9 @@ class Grid:
                 if 0 <= nr < self.rows and 0 <= nc < self.cols and self.grid[nr][nc] == condition_value:
                     conditional_neighbours.append((nr, nc))
         return conditional_neighbours
+    
+    def is_in_bounds(self, r: int, c: int) -> bool:
+        return 0 <= r < self.rows and 0 <= c < self.cols
 
 
     def get_value(self, r: int, c: int):

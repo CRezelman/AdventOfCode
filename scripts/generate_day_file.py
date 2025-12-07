@@ -5,7 +5,7 @@ import os
 def generate_day_file(year: int, day: int):
     """Generates File for a new Day"""
     content = f'''"""Day {day} Solve"""
-from utilities.solver import InputType, Solver
+from utilities.solver import Solver
 
 class Day{day}(Solver):
 
@@ -13,7 +13,7 @@ class Day{day}(Solver):
         for line in self.lines:
             pass
     
-Day{day}({year}, {day}, InputType.LINES).run()
+Day{day}({year}, {day}).run()
 '''
 
     directory = os.path.join(os.path.dirname(__file__), f"../{year}")
