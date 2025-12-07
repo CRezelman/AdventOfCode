@@ -1,6 +1,5 @@
 """Day 6 Solve"""
 from utilities.solver import Solver
-import math
 
 class Day6(Solver):
 
@@ -23,6 +22,5 @@ class Day6(Solver):
                 self.part2 += eval(op.join(group))
                 op = None
                 group = []
-
     
 Day6(2025, 6, strip=False).run()

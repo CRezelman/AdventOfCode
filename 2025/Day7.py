@@ -1,6 +1,5 @@
 """Day 7 Solve"""
 from utilities.solver import Solver
-from collections import deque
 
 class Day7(Solver):
     def solve(self) -> None:
@@ -17,12 +16,10 @@ class Day7(Solver):
                 if count == 0:
                     continue
 
-                if self.grid.get_value(r, c) == '^':
+                if self.grid.get_value(r + 1, c) == '^':
                     self.part1 += 1
-                    if c > 0:
-                        next_row[c - 1] += count
-                    if c < self.grid.cols - 1:
-                        next_row[c + 1] += count
+                    next_row[c - 1] += count
+                    next_row[c + 1] += count
                 else:
                     next_row[c] += count
 
@@ -30,5 +27,4 @@ class Day7(Solver):
 
         self.part2 = sum(current)
 
-    
 Day7(2025, 7).run()
