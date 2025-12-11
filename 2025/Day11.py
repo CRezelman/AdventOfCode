@@ -1,17 +1,24 @@
 """Day 11 Solve"""
 from utilities.solver import Solver
-import networkx as nx
+from functools import cache
 
 class Day11(Solver):
+    @cache
+    def count_paths(self, source, target) -> int:
+        return 1 if source == target else sum(
+            self.count_paths(neighbor, target)
+            for neighbor in self.G.get(source, [])
+        ) 
+
     def solve(self) -> None:
-        G = nx.DiGraph()
+
+        self.G = dict()
         for line in self.lines:
             input, output = line.split(': ')
             output = output.split(' ')
-            G.add_node(input)
-            for out in output:
-                G.add_edge(input, out)
+            self.G[input] = output
 
-        self.part1 = len(list(nx.all_simple_paths(G, source='you', target='out')))
+        self.part1 = self.count_paths('you', 'out')
+        self.part2 = self.count_paths('svr', 'fft') * self.count_paths('fft', 'dac') * self.count_paths('dac', 'out')
     
 Day11(2025, 11).run()
