@@ -9,9 +9,7 @@ class Procedure:
     buttons: list[str]
     joltage: str
 
-
 class Day10(Solver):
-
     def solve(self) -> None:
         self.procedures: list[Procedure] = []
         for line in self.lines:
@@ -20,7 +18,6 @@ class Day10(Solver):
             buttons = [tuple(map(int, button.strip('()').split(','))) for button in buttons]
             joltage = list(map(int, joltage.strip('{{}}').split(',')))
             self.procedures.append(Procedure(indicator, buttons, joltage))
-
 
         for procedure in self.procedures:
             comb_found = set()
@@ -33,7 +30,6 @@ class Day10(Solver):
                     if result == procedure.indicator:
                         comb_found.add(comb)
                         break
-            if comb_found:
-                self.part1 += min(len(c) for c in comb_found)
+            self.part1 += min(len(c) for c in comb_found)
     
 Day10(2025, 10).run()
